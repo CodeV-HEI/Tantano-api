@@ -6,6 +6,8 @@ import { authRouter, labelRouter, swaggerRouter } from "@/routes";
 
 import { walletRouter } from "./routes/wallet-routes";
 
+import { Request, Response } from "express";
+
 export const server = async () => {
   try {
     const PORT = process.env.PORT || 8080;
@@ -18,6 +20,9 @@ export const server = async () => {
 
     app.use("/account/:accountId/label", securityHandler, labelRouter);
     app.use("/account/:accountId/wallet", securityHandler, walletRouter);
+    app.get("/", (_req: Request, res: Response) => {
+      res.redirect("/api-docs");
+    });
     app.use("/", swaggerRouter);
 
     app.listen(PORT, () => {
