@@ -325,6 +325,37 @@
               "type": "string"
             },
             "style": "simple"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "isActive",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "walletType",
+            "required": false,
+            "schema": {
+              "enum": ["CASH", "MOBILE_MONEY", "BANK", "DEBT"],
+              "type": "string"
+            },
+            "style": "form"
           }
         ],
         "responses": {
@@ -332,10 +363,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/Wallet"
-                  },
-                  "type": "array"
+                  "$ref": "#/components/schemas/getAllWallets_200_response"
                 }
               }
             },
@@ -411,7 +439,7 @@
           {
             "explode": false,
             "in": "path",
-            "name": "labelId",
+            "name": "walletId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -456,7 +484,7 @@
           {
             "explode": false,
             "in": "path",
-            "name": "labelId",
+            "name": "walletId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -498,6 +526,66 @@
         "tags": ["wallet"]
       }
     },
+    "/account/{accountId}/wallet/{walletId}/automaticIncome": {
+      "put": {
+        "operationId": "updateOneWalletAutomaticIncome",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "walletId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WalletAutomaticIncome"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Wallet"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Update one wallet automatic income by walletId and accountId",
+        "tags": ["wallet"]
+      }
+    },
     "/account/{accountId}/wallet/{walletId}/transaction": {
       "get": {
         "operationId": "getAllTransactions",
@@ -516,7 +604,7 @@
           {
             "explode": false,
             "in": "path",
-            "name": "labelId",
+            "name": "walletId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -560,7 +648,7 @@
           {
             "explode": false,
             "in": "path",
-            "name": "labelId",
+            "name": "walletId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -620,7 +708,7 @@
           {
             "explode": false,
             "in": "path",
-            "name": "labelId",
+            "name": "walletId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -676,7 +764,7 @@
           {
             "explode": false,
             "in": "path",
-            "name": "labelId",
+            "name": "walletId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -779,7 +867,7 @@
       "WalletId": {
         "explode": false,
         "in": "path",
-        "name": "labelId",
+        "name": "walletId",
         "required": true,
         "schema": {
           "format": "uuid",
@@ -815,6 +903,27 @@
         "name": "name",
         "required": false,
         "schema": {
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "IsActive": {
+        "explode": true,
+        "in": "query",
+        "name": "isActive",
+        "required": false,
+        "schema": {
+          "type": "boolean"
+        },
+        "style": "form"
+      },
+      "WalletType": {
+        "explode": true,
+        "in": "query",
+        "name": "walletType",
+        "required": false,
+        "schema": {
+          "enum": ["CASH", "MOBILE_MONEY", "BANK", "DEBT"],
           "type": "string"
         },
         "style": "form"
@@ -897,6 +1006,22 @@
         "type": "object",
         "example": null
       },
+      "WalletAutomaticIncome": {
+        "properties": {
+          "type": {
+            "enum": ["NOT_SPECIFIED", "MENSUAL"],
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "paymentDay": {
+            "description": "one day in a month where the new payment will be add to the current wallet\nonly work if the type is MENSUAL\n",
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
       "CreationWallet": {
         "properties": {
           "name": {
@@ -949,6 +1074,13 @@
               "amount": {
                 "format": "double",
                 "type": "number"
+              },
+              "walletAutomaticIncome": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WalletAutomaticIncome"
+                  }
+                ]
               }
             },
             "type": "object",
@@ -1055,6 +1187,24 @@
           "values": {
             "items": {
               "$ref": "#/components/schemas/Label"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "getAllWallets_200_response": {
+        "properties": {
+          "pagination": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationResult"
+              }
+            ]
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/Wallet"
             },
             "type": "array"
           }

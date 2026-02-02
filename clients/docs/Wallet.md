@@ -2,15 +2,16 @@
 
 ## Properties
 
-| Name          | Type    |
-| ------------- | ------- |
-| `name`        | string  |
-| `description` | string  |
-| `type`        | string  |
-| `id`          | string  |
-| `accountId`   | string  |
-| `isActive`    | boolean |
-| `amount`      | number  |
+| Name                    | Type                                              |
+| ----------------------- | ------------------------------------------------- |
+| `name`                  | string                                            |
+| `description`           | string                                            |
+| `type`                  | string                                            |
+| `id`                    | string                                            |
+| `accountId`             | string                                            |
+| `isActive`              | boolean                                           |
+| `amount`                | number                                            |
+| `walletAutomaticIncome` | [WalletAutomaticIncome](WalletAutomaticIncome.md) |
 
 ## Example
 
@@ -26,6 +27,7 @@ const example = {
   accountId: null,
   isActive: null,
   amount: null,
+  walletAutomaticIncome: null,
 } satisfies Wallet;
 
 console.log(example);

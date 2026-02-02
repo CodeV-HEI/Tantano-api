@@ -48,16 +48,19 @@ model File {
 }
 
 model Wallet {
-  id           String        @id @default(uuid())
-  name         String        @unique
-  type         String
-  description  String?
-  amount       Int
-  isActive     Boolean       @default(true)
-  createdAt    DateTime?     @default(now())
-  transactions Transaction[]
-  accountId    String
-  account      Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  id                    String        @id @default(uuid())
+  name                  String        @unique
+  type                  String
+  description           String?
+  amount                Int
+  isActive              Boolean       @default(true)
+  createdAt             DateTime?     @default(now())
+  haveAutomaticIncome   Boolean?      @default(false)
+  automaticIncomeAmount Int?          @default(0)
+  automaticIncomeDay    Int?          @default(1)
+  transactions          Transaction[]
+  accountId             String
+  account               Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
 
 model Label {

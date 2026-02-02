@@ -11,7 +11,7 @@ All URIs are relative to _http://localhost:8080_
 
 ## createOneTransaction
 
-> Transaction createOneTransaction(accountId, labelId, creationTransaction)
+> Transaction createOneTransaction(accountId, walletId, creationTransaction)
 
 Create new transaction for the specified account
 
@@ -32,7 +32,7 @@ async function example() {
     // string
     accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
-    labelId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    walletId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // CreationTransaction (optional)
     creationTransaction: ...,
   } satisfies CreateOneTransactionRequest;
@@ -54,7 +54,7 @@ example().catch(console.error);
 | Name                    | Type                                          | Description | Notes                     |
 | ----------------------- | --------------------------------------------- | ----------- | ------------------------- |
 | **accountId**           | `string`                                      |             | [Defaults to `undefined`] |
-| **labelId**             | `string`                                      |             | [Defaults to `undefined`] |
+| **walletId**            | `string`                                      |             | [Defaults to `undefined`] |
 | **creationTransaction** | [CreationTransaction](CreationTransaction.md) |             | [Optional]                |
 
 ### Return type
@@ -80,7 +80,7 @@ No authorization required
 
 ## getAllTransactions
 
-> Array&lt;Transaction&gt; getAllTransactions(accountId, labelId)
+> Array&lt;Transaction&gt; getAllTransactions(accountId, walletId)
 
 Get all disponibles transaction for the specified account
 
@@ -101,7 +101,7 @@ async function example() {
     // string
     accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
-    labelId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    walletId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
   } satisfies GetAllTransactionsRequest;
 
   try {
@@ -121,7 +121,7 @@ example().catch(console.error);
 | Name          | Type     | Description | Notes                     |
 | ------------- | -------- | ----------- | ------------------------- |
 | **accountId** | `string` |             | [Defaults to `undefined`] |
-| **labelId**   | `string` |             | [Defaults to `undefined`] |
+| **walletId**  | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -146,7 +146,7 @@ No authorization required
 
 ## getOneTransaction
 
-> Transaction getOneTransaction(accountId, labelId, transactionId)
+> Transaction getOneTransaction(accountId, walletId, transactionId)
 
 Get get one transaction by id for the specified account
 
@@ -167,7 +167,7 @@ async function example() {
     // string
     accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
-    labelId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    walletId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
     transactionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
   } satisfies GetOneTransactionRequest;
@@ -189,7 +189,7 @@ example().catch(console.error);
 | Name              | Type     | Description | Notes                     |
 | ----------------- | -------- | ----------- | ------------------------- |
 | **accountId**     | `string` |             | [Defaults to `undefined`] |
-| **labelId**       | `string` |             | [Defaults to `undefined`] |
+| **walletId**      | `string` |             | [Defaults to `undefined`] |
 | **transactionId** | `string` |             | [Defaults to `undefined`] |
 
 ### Return type
@@ -215,7 +215,7 @@ No authorization required
 
 ## updateOneTransaction
 
-> Transaction updateOneTransaction(accountId, labelId, transactionId, transaction)
+> Transaction updateOneTransaction(accountId, walletId, transactionId, transaction)
 
 Update one transaction by id for the specified account
 
@@ -236,7 +236,7 @@ async function example() {
     // string
     accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
-    labelId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    walletId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
     transactionId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // Transaction (optional)
@@ -260,7 +260,7 @@ example().catch(console.error);
 | Name              | Type                          | Description | Notes                     |
 | ----------------- | ----------------------------- | ----------- | ------------------------- |
 | **accountId**     | `string`                      |             | [Defaults to `undefined`] |
-| **labelId**       | `string`                      |             | [Defaults to `undefined`] |
+| **walletId**      | `string`                      |             | [Defaults to `undefined`] |
 | **transactionId** | `string`                      |             | [Defaults to `undefined`] |
 | **transaction**   | [Transaction](Transaction.md) |             | [Optional]                |
 

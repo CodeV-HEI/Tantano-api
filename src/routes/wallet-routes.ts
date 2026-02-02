@@ -8,4 +8,5 @@ export const walletRouter = express.Router();
 walletRouter.post("/", WalletController.create);
 walletRouter.get("/", paginationHandler, WalletController.getAll);
 walletRouter.put("/:walletId", WalletController.update);
+walletRouter.put("/:walletId/automaticIncome", WalletController.updateAutomaticIncome);
 walletRouter.get("/:walletId", WalletController.getOne);

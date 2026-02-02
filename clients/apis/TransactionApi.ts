@@ -17,24 +17,24 @@ import * as runtime from "../runtime";
 
 export interface CreateOneTransactionRequest {
   accountId: string;
-  labelId: string;
+  walletId: string;
   creationTransaction?: CreationTransaction;
 }
 
 export interface GetAllTransactionsRequest {
   accountId: string;
-  labelId: string;
+  walletId: string;
 }
 
 export interface GetOneTransactionRequest {
   accountId: string;
-  labelId: string;
+  walletId: string;
   transactionId: string;
 }
 
 export interface UpdateOneTransactionRequest {
   accountId: string;
-  labelId: string;
+  walletId: string;
   transactionId: string;
   transaction?: Transaction;
 }
@@ -54,8 +54,8 @@ export class TransactionApi extends runtime.BaseAPI {
       throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling createOneTransaction().');
     }
 
-    if (requestParameters["labelId"] == null) {
-      throw new runtime.RequiredError("labelId", 'Required parameter "labelId" was null or undefined when calling createOneTransaction().');
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling createOneTransaction().');
     }
 
     const queryParameters: any = {};
@@ -66,7 +66,7 @@ export class TransactionApi extends runtime.BaseAPI {
 
     let urlPath = `/account/{accountId}/wallet/{walletId}/transaction`;
     urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
-    urlPath = urlPath.replace(`{${"labelId"}}`, encodeURIComponent(String(requestParameters["labelId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
 
     const response = await this.request(
       {
@@ -101,8 +101,8 @@ export class TransactionApi extends runtime.BaseAPI {
       throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling getAllTransactions().');
     }
 
-    if (requestParameters["labelId"] == null) {
-      throw new runtime.RequiredError("labelId", 'Required parameter "labelId" was null or undefined when calling getAllTransactions().');
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling getAllTransactions().');
     }
 
     const queryParameters: any = {};
@@ -111,7 +111,7 @@ export class TransactionApi extends runtime.BaseAPI {
 
     let urlPath = `/account/{accountId}/wallet/{walletId}/transaction`;
     urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
-    urlPath = urlPath.replace(`{${"labelId"}}`, encodeURIComponent(String(requestParameters["labelId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
 
     const response = await this.request(
       {
@@ -142,8 +142,8 @@ export class TransactionApi extends runtime.BaseAPI {
       throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling getOneTransaction().');
     }
 
-    if (requestParameters["labelId"] == null) {
-      throw new runtime.RequiredError("labelId", 'Required parameter "labelId" was null or undefined when calling getOneTransaction().');
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling getOneTransaction().');
     }
 
     if (requestParameters["transactionId"] == null) {
@@ -156,7 +156,7 @@ export class TransactionApi extends runtime.BaseAPI {
 
     let urlPath = `/account/{accountId}/wallet/{walletId}/transaction/{transactionId}`;
     urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
-    urlPath = urlPath.replace(`{${"labelId"}}`, encodeURIComponent(String(requestParameters["labelId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
     urlPath = urlPath.replace(`{${"transactionId"}}`, encodeURIComponent(String(requestParameters["transactionId"])));
 
     const response = await this.request(
@@ -191,8 +191,8 @@ export class TransactionApi extends runtime.BaseAPI {
       throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling updateOneTransaction().');
     }
 
-    if (requestParameters["labelId"] == null) {
-      throw new runtime.RequiredError("labelId", 'Required parameter "labelId" was null or undefined when calling updateOneTransaction().');
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling updateOneTransaction().');
     }
 
     if (requestParameters["transactionId"] == null) {
@@ -207,7 +207,7 @@ export class TransactionApi extends runtime.BaseAPI {
 
     let urlPath = `/account/{accountId}/wallet/{walletId}/transaction/{transactionId}`;
     urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
-    urlPath = urlPath.replace(`{${"labelId"}}`, encodeURIComponent(String(requestParameters["labelId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
     urlPath = urlPath.replace(`{${"transactionId"}}`, encodeURIComponent(String(requestParameters["transactionId"])));
 
     const response = await this.request(

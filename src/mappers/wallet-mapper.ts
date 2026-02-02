@@ -1,8 +1,9 @@
-import { Wallet as RestWallet, WalletTypeEnum } from "@clients";
+import { GetAllWallets200Response, Wallet as RestWallet, WalletTypeEnum } from "@clients";
 import { Wallet as PrismaWallet } from "@prisma/client";
 import { v4 } from "uuid";
 
-import { copyObject } from "@/utilities";
+import { PrismaPaginationInfo } from "@/types";
+import { calculatePagination, copyObject } from "@/utilities";
 
 export class WalletMapper {
   public static toRest(wallet: PrismaWallet) {
@@ -14,6 +15,11 @@ export class WalletMapper {
       accountId: wallet.accountId,
       description: wallet.description,
       type: wallet.type as WalletTypeEnum,
+      walletAutomaticIncome: {
+        amount: wallet.automaticIncomeAmount,
+        paymentDay: wallet.automaticIncomeDay,
+        type: wallet.haveAutomaticIncome ? "MENSUAL" : "NOT_SPECIFIED",
+      },
     };
     return mapped;
   }
@@ -49,5 +55,15 @@ export class WalletMapper {
     delete mapped.amount;
     mapped.accountId = accountId;
     return mapped as PrismaWallet;
+  }
+
+  public static toListResponse(wallets: PrismaWallet[], prismaPaginationInfo: PrismaPaginationInfo) {
+    const mapped = wallets.map(this.toRest.bind(this));
+    const listResponse: GetAllWallets200Response = {
+      pagination: calculatePagination(prismaPaginationInfo),
+      values: mapped,
+    };
+
+    return listResponse;
   }
 }

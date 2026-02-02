@@ -1,10 +1,11 @@
-import { CreationWallet, UpdateWallet } from "@clients";
+import { CreationWallet, UpdateWallet, WalletAutomaticIncome } from "@clients";
 import { v4 } from "uuid";
 
 import { getPrismaClient } from "@/configs";
 import { ApiError } from "@/errors";
 import { WalletMapper } from "@/mappers";
-import { ListFilters } from "@/types";
+import { ListFilters, NameFilter, WalletFilter } from "@/types";
+import { filterIfNotNull } from "@/utilities";
 
 export class WalletServices {
   static async create(accountId: string, wallet: CreationWallet) {
@@ -21,19 +22,34 @@ export class WalletServices {
 
     return await getPrismaClient().wallet.update({ data: WalletMapper.update(accountId, wallet), where: { id: wallet.id, accountId } });
   }
+  static async updateAutomaticIncome(accountId: string, walletId: string, automaticIncome: WalletAutomaticIncome) {
+    const getWalletById = await getPrismaClient().wallet.findFirst({ where: { id: walletId, accountId } });
+    if (!getWalletById) throw new ApiError(`Wallet with id=${walletId} not found`, 404);
+
+    getWalletById.automaticIncomeAmount = automaticIncome.amount;
+    getWalletById.automaticIncomeDay = automaticIncome.paymentDay;
+    getWalletById.isActive = automaticIncome.type === "MENSUAL";
+
+    return await getPrismaClient().wallet.update({ data: getWalletById, where: { id: walletId, accountId } });
+  }
 
   static async getOneById(accountId: string, id: string) {
     const getWalletById = await getPrismaClient().wallet.findFirst({ where: { id, accountId } });
     if (!getWalletById) throw new ApiError(`Wallet with id=${id} not found`, 404);
     return getWalletById;
   }
-  static async getAll(accountId: string, query: ListFilters) {
-    const { page, pageSize } = query;
+  static async getAll(accountId: string, query: ListFilters & NameFilter & WalletFilter) {
+    const { page, pageSize, name, isActive, walletType } = query;
 
-    return await getPrismaClient().wallet.findMany({
+    const where = { accountId, name: { contains: name }, ...filterIfNotNull("isActive", isActive), ...filterIfNotNull("type", walletType) };
+
+    const values = await getPrismaClient().wallet.findMany({
       take: pageSize,
       skip: pageSize * (page - 1),
-      where: { accountId },
+      where,
     });
+
+    const count = await getPrismaClient().wallet.count({ where });
+    return { values, count };
   }
 }

@@ -144,6 +144,9 @@ paths:
         - wallet
       parameters:
         - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/Name"
+        - $ref: "#/components/parameters/IsActive"
+        - $ref: "#/components/parameters/WalletType"
       summary: Get all disponibles wallet for the specified account
       operationId: getAllWallets
       responses:
@@ -152,9 +155,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Wallet"
+                type: object
+                properties:
+                  pagination:
+                    allOf:
+                      - $ref: "#/components/schemas/PaginationResult"
+                  values:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Wallet"
+
     post:
       tags:
         - wallet
@@ -215,6 +225,31 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/Wallet"
+
+  /account/{accountId}/wallet/{walletId}/automaticIncome:
+    put:
+      tags:
+        - wallet
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/WalletId"
+      summary: Update one wallet automatic income by walletId and accountId
+      operationId: updateOneWalletAutomaticIncome
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/WalletAutomaticIncome"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Wallet"
+
   /account/{accountId}/wallet/{walletId}/transaction:
     get:
       tags:
@@ -327,7 +362,7 @@ components:
         type: string
         format: uuid
     WalletId:
-      name: labelId
+      name: walletId
       required: true
       in: path
       schema:
@@ -353,6 +388,23 @@ components:
       in: query
       schema:
         type: string
+    IsActive:
+      name: isActive
+      required: false
+      in: query
+      schema:
+        type: boolean
+    WalletType:
+      name: walletType
+      required: false
+      in: query
+      schema:
+        type: string
+        enum:
+          - CASH
+          - MOBILE_MONEY
+          - BANK
+          - DEBT
     Month:
       name: month
       required: false
@@ -404,6 +456,22 @@ components:
         id:
           type: string
           format: uuid
+    WalletAutomaticIncome:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - NOT_SPECIFIED
+            - MENSUAL
+        amount:
+          type: number
+        paymentDay:
+          type: number
+          description: |
+            one day in a month where the new payment will be add to the current wallet
+            only work if the type is MENSUAL
+
     CreationWallet:
       type: object
       properties:
@@ -441,6 +509,9 @@ components:
         amount:
           type: number
           format: double
+        walletAutomaticIncome:
+          allOf:
+            - $ref: "#/components/schemas/WalletAutomaticIncome"
     CreationLabel:
       type: object
       properties:

@@ -12,6 +12,8 @@
  * Do not edit the class manually.
  */
 import { mapValues } from "../runtime";
+import type { WalletAutomaticIncome } from "./WalletAutomaticIncome";
+import { WalletAutomaticIncomeFromJSON, WalletAutomaticIncomeFromJSONTyped, WalletAutomaticIncomeToJSON, WalletAutomaticIncomeToJSONTyped } from "./WalletAutomaticIncome";
 
 /**
  *
@@ -61,6 +63,12 @@ export interface Wallet {
    * @memberof Wallet
    */
   amount?: number;
+  /**
+   *
+   * @type {WalletAutomaticIncome}
+   * @memberof Wallet
+   */
+  walletAutomaticIncome?: WalletAutomaticIncome;
 }
 
 /**
@@ -97,6 +105,7 @@ export function WalletFromJSONTyped(json: any, ignoreDiscriminator: boolean): Wa
     accountId: json["accountId"] == null ? undefined : json["accountId"],
     isActive: json["isActive"] == null ? undefined : json["isActive"],
     amount: json["amount"] == null ? undefined : json["amount"],
+    walletAutomaticIncome: json["walletAutomaticIncome"] == null ? undefined : WalletAutomaticIncomeFromJSON(json["walletAutomaticIncome"]),
   };
 }
 
@@ -117,5 +126,6 @@ export function WalletToJSONTyped(value?: Wallet | null, ignoreDiscriminator: bo
     accountId: value["accountId"],
     isActive: value["isActive"],
     amount: value["amount"],
+    walletAutomaticIncome: WalletAutomaticIncomeToJSON(value["walletAutomaticIncome"]),
   };
 }
