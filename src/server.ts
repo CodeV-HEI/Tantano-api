@@ -15,17 +15,27 @@ export const server = async () => {
     const app = express();
 
     const allowedOrigins = [
-      'http://localhost:8081'
+      'http://localhost:8081',
+      'exp://localhost:19000',
+      'http://localhost:19000',
+      'https://tantano-api.onrender.com'
     ];
 
     const corsOptions = {
-      origin: (origin, callback) => {
-        if (allowedOrigins.includes(origin) || !origin) callback(null, true);
-        else callback(new Error('Not allowed by CORS'));
+      origin: (origin: string | undefined, callback: any) => {
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          console.log('CORS bloqué pour origine:', origin);
+          callback(new Error('Not allowed by CORS'));
+        }
       },
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      credentials: true
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE', 'OPTIONS', 'PATCH'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+      credentials: true,
+      optionsSuccessStatus: 200
     };
 
     app.use(express.json());
