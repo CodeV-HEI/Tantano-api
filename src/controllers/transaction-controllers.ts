@@ -8,12 +8,13 @@ import { TransactionValidator } from "@/validator";
 export class TransactionController {
   static readonly create: RequestHandler = async (req, res, _next) => {
     try {
-      const { name } = req.body;
       const accountId = (req as any).account.id;
+      const { walletId } = req.params;
 
-      TransactionValidator.create({ name });
+      TransactionValidator.create(req.body);
+      const mappedCreateTransaction = TransactionMapper.create(accountId, walletId as string, req.body);
 
-      const data = await TransactionServices.create(accountId, { id: v4(), name });
+      const data = await TransactionServices.create(accountId, walletId as string, mappedCreateTransaction);
       res.json(TransactionMapper.toRest(data));
     } catch (error) {
       res.json({ code: error.status, message: error.message });
