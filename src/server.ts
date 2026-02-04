@@ -13,8 +13,23 @@ export const server = async () => {
     const PORT = process.env.PORT || 8080;
 
     const app = express();
+
+    const allowedOrigins = [
+      'http://localhost:8081'
+    ];
+
+    const corsOptions = {
+      origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || !origin) callback(null, true);
+        else callback(new Error('Not allowed by CORS'));
+      },
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true
+    };
+
     app.use(express.json());
-    app.use(cors());
+    app.use(cors(corsOptions));
 
     app.use("/auth", authRouter);
 
