@@ -816,6 +816,194 @@
         "summary": "Update one transaction by id for the specified account",
         "tags": ["transaction"]
       }
+    },
+    "/account/{accountId}/goal": {
+      "get": {
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "startingDate",
+            "required": false,
+            "schema": {
+              "format": "datetime",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "endingDate",
+            "required": false,
+            "schema": {
+              "format": "datetime",
+              "type": "string"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_account__accountId__goal_get_200_response"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Get all disponibles goal of one account",
+        "tags": ["goal"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreationGoal"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/_account__accountId__goal_get_200_response"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "create new goal for one account",
+        "tags": ["goal"]
+      }
+    },
+    "/account/{accountId}/goal/{goalId}": {
+      "get": {
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Goal"
+                    }
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Get one goal of one account by it's id",
+        "tags": ["goal"]
+      },
+      "put": {
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Goal"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Goal"
+                    }
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "update one goal of one account",
+        "tags": ["goal"]
+      }
     }
   },
   "components": {
@@ -928,6 +1116,28 @@
         },
         "style": "form"
       },
+      "StartingDate": {
+        "explode": true,
+        "in": "query",
+        "name": "startingDate",
+        "required": false,
+        "schema": {
+          "format": "datetime",
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "EndingDate": {
+        "explode": true,
+        "in": "query",
+        "name": "endingDate",
+        "required": false,
+        "schema": {
+          "format": "datetime",
+          "type": "string"
+        },
+        "style": "form"
+      },
       "Month": {
         "explode": true,
         "in": "query",
@@ -952,6 +1162,48 @@
       }
     },
     "schemas": {
+      "CreationGoal": {
+        "properties": {
+          "name": {
+            "example": "Frebruary resolution",
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "walletId": {
+            "type": "string"
+          },
+          "startingDate": {
+            "format": "datetime",
+            "type": "string"
+          },
+          "endingDate": {
+            "format": "datetime",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Goal": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreationGoal"
+          },
+          {
+            "properties": {
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "example": null
+          }
+        ],
+        "type": "object",
+        "example": null
+      },
       "CreationTransaction": {
         "properties": {
           "date": {
@@ -1205,6 +1457,24 @@
           "values": {
             "items": {
               "$ref": "#/components/schemas/Wallet"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "_account__accountId__goal_get_200_response": {
+        "properties": {
+          "pagination": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaginationResult"
+              }
+            ]
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/Goal"
             },
             "type": "array"
           }

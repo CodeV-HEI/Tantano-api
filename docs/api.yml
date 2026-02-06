@@ -331,6 +331,97 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/Transaction"
+
+  /account/{accountId}/goal:
+    get:
+      tags:
+        - goal
+      summary: Get all disponibles goal of one account
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/Name"
+        - $ref: "#/components/parameters/StartingDate"
+        - $ref: "#/components/parameters/EndingDate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pagination:
+                    allOf:
+                      - $ref: "#/components/schemas/PaginationResult"
+                  values:
+                    items:
+                      $ref: "#/components/schemas/Goal"
+    post:
+      tags:
+        - goal
+      summary: create new goal for one account
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreationGoal"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pagination:
+                    allOf:
+                      - $ref: "#/components/schemas/PaginationResult"
+                  values:
+                    items:
+                      $ref: "#/components/schemas/Goal"
+  /account/{accountId}/goal/{goalId}:
+    get:
+      tags:
+        - goal
+      summary: Get one goal of one account by it's id
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/Goal"
+    put:
+      tags:
+        - goal
+      summary: update one goal of one account
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Goal"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/Goal"
+
 components:
   parameters:
     Id:
@@ -405,6 +496,20 @@ components:
           - MOBILE_MONEY
           - BANK
           - DEBT
+    StartingDate:
+      name: startingDate
+      required: false
+      in: query
+      schema:
+        type: string
+        format: datetime
+    EndingDate:
+      name: endingDate
+      required: false
+      in: query
+      schema:
+        type: string
+        format: datetime
     Month:
       name: month
       required: false
@@ -421,6 +526,30 @@ components:
         type: number
 
   schemas:
+    CreationGoal:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Frebruary resolution
+        amount:
+          type: number
+        walletId:
+          type: string
+        startingDate:
+          type: string
+          format: datetime
+        endingDate:
+          type: string
+          format: datetime
+    Goal:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CreationGoal"
+      properties:
+        id:
+          type: string
+          format: uuid
     CreationTransaction:
       type: object
       properties:
