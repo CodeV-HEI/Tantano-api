@@ -1,4 +1,4 @@
-# Posu API
+# Tantano API
 
 # Lib
 
