@@ -42,6 +42,18 @@ export interface UpdateWallet {
    * @type {string}
    * @memberof UpdateWallet
    */
+  color?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UpdateWallet
+   */
+  iconRef?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UpdateWallet
+   */
   id?: string;
   /**
    *
@@ -87,6 +99,8 @@ export function UpdateWalletFromJSONTyped(json: any, ignoreDiscriminator: boolea
     name: json["name"] == null ? undefined : json["name"],
     description: json["description"] == null ? undefined : json["description"],
     type: json["type"] == null ? undefined : json["type"],
+    color: json["color"] == null ? undefined : json["color"],
+    iconRef: json["iconRef"] == null ? undefined : json["iconRef"],
     id: json["id"] == null ? undefined : json["id"],
     accountId: json["accountId"] == null ? undefined : json["accountId"],
     isActive: json["isActive"] == null ? undefined : json["isActive"],
@@ -106,6 +120,8 @@ export function UpdateWalletToJSONTyped(value?: UpdateWallet | null, ignoreDiscr
     name: value["name"],
     description: value["description"],
     type: value["type"],
+    color: value["color"],
+    iconRef: value["iconRef"],
     id: value["id"],
     accountId: value["accountId"],
     isActive: value["isActive"],

@@ -39,16 +39,16 @@ export interface Goal {
   walletId?: string;
   /**
    *
-   * @type {string}
+   * @type {Date}
    * @memberof Goal
    */
-  startingDate?: string;
+  startingDate?: Date;
   /**
    *
-   * @type {string}
+   * @type {Date}
    * @memberof Goal
    */
-  endingDate?: string;
+  endingDate?: Date;
   /**
    *
    * @type {string}
@@ -76,8 +76,8 @@ export function GoalFromJSONTyped(json: any, ignoreDiscriminator: boolean): Goal
     name: json["name"] == null ? undefined : json["name"],
     amount: json["amount"] == null ? undefined : json["amount"],
     walletId: json["walletId"] == null ? undefined : json["walletId"],
-    startingDate: json["startingDate"] == null ? undefined : json["startingDate"],
-    endingDate: json["endingDate"] == null ? undefined : json["endingDate"],
+    startingDate: json["startingDate"] == null ? undefined : new Date(json["startingDate"]),
+    endingDate: json["endingDate"] == null ? undefined : new Date(json["endingDate"]),
     id: json["id"] == null ? undefined : json["id"],
   };
 }
@@ -95,8 +95,8 @@ export function GoalToJSONTyped(value?: Goal | null, ignoreDiscriminator: boolea
     name: value["name"],
     amount: value["amount"],
     walletId: value["walletId"],
-    startingDate: value["startingDate"],
-    endingDate: value["endingDate"],
+    startingDate: value["startingDate"] == null ? value["startingDate"] : value["startingDate"].toISOString(),
+    endingDate: value["endingDate"] == null ? value["endingDate"] : value["endingDate"].toISOString(),
     id: value["id"],
   };
 }

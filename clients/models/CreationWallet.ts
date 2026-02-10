@@ -37,6 +37,18 @@ export interface CreationWallet {
    * @memberof CreationWallet
    */
   type?: CreationWalletTypeEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof CreationWallet
+   */
+  color?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CreationWallet
+   */
+  iconRef?: string;
 }
 
 /**
@@ -69,6 +81,8 @@ export function CreationWalletFromJSONTyped(json: any, ignoreDiscriminator: bool
     name: json["name"] == null ? undefined : json["name"],
     description: json["description"] == null ? undefined : json["description"],
     type: json["type"] == null ? undefined : json["type"],
+    color: json["color"] == null ? undefined : json["color"],
+    iconRef: json["iconRef"] == null ? undefined : json["iconRef"],
   };
 }
 
@@ -85,5 +99,7 @@ export function CreationWalletToJSONTyped(value?: CreationWallet | null, ignoreD
     name: value["name"],
     description: value["description"],
     type: value["type"],
+    color: value["color"],
+    iconRef: value["iconRef"],
   };
 }

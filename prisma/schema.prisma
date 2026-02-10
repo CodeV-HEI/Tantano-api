@@ -58,6 +58,8 @@ model Wallet {
   haveAutomaticIncome   Boolean?      @default(false)
   automaticIncomeAmount Int?          @default(0)
   automaticIncomeDay    Int?          @default(1)
+  color                 String        @default("#00ff00")
+  iconRef               String?
   transactions          Transaction[]
   accountId             String
   account               Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
@@ -68,6 +70,8 @@ model Label {
   name         String        @unique
   createdAt    DateTime?     @default(now())
   updatedAt    DateTime      @updatedAt
+  color        String        @default("#00ff00")
+  iconRef      String?
   transactions Transaction[]
   accountId    String
   account      Account?      @relation(fields: [accountId], references: [id], onDelete: Cascade)

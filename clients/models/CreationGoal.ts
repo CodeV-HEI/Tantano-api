@@ -39,16 +39,16 @@ export interface CreationGoal {
   walletId?: string;
   /**
    *
-   * @type {string}
+   * @type {Date}
    * @memberof CreationGoal
    */
-  startingDate?: string;
+  startingDate?: Date;
   /**
    *
-   * @type {string}
+   * @type {Date}
    * @memberof CreationGoal
    */
-  endingDate?: string;
+  endingDate?: Date;
 }
 
 /**
@@ -70,8 +70,8 @@ export function CreationGoalFromJSONTyped(json: any, ignoreDiscriminator: boolea
     name: json["name"] == null ? undefined : json["name"],
     amount: json["amount"] == null ? undefined : json["amount"],
     walletId: json["walletId"] == null ? undefined : json["walletId"],
-    startingDate: json["startingDate"] == null ? undefined : json["startingDate"],
-    endingDate: json["endingDate"] == null ? undefined : json["endingDate"],
+    startingDate: json["startingDate"] == null ? undefined : new Date(json["startingDate"]),
+    endingDate: json["endingDate"] == null ? undefined : new Date(json["endingDate"]),
   };
 }
 
@@ -88,7 +88,7 @@ export function CreationGoalToJSONTyped(value?: CreationGoal | null, ignoreDiscr
     name: value["name"],
     amount: value["amount"],
     walletId: value["walletId"],
-    startingDate: value["startingDate"],
-    endingDate: value["endingDate"],
+    startingDate: value["startingDate"] == null ? value["startingDate"] : value["startingDate"].toISOString(),
+    endingDate: value["endingDate"] == null ? value["endingDate"] : value["endingDate"].toISOString(),
   };
 }

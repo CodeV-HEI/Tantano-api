@@ -5,7 +5,7 @@ All URIs are relative to _http://localhost:8080_
 | Method                                                             | HTTP request                                                               | Description                                               |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [**createOneTransaction**](TransactionApi.md#createonetransaction) | **POST** /account/{accountId}/wallet/{walletId}/transaction                | Create new transaction for the specified account          |
-| [**getAllTransactions**](TransactionApi.md#getalltransactions)     | **GET** /account/{accountId}/wallet/{walletId}/transaction                 | Get all disponibles transaction for the specified account |
+| [**getAllTransactions**](TransactionApi.md#getalltransactions)     | **GET** /account/{accountId}/transaction                                   | Get all disponibles transaction for the specified account |
 | [**getOneTransaction**](TransactionApi.md#getonetransaction)       | **GET** /account/{accountId}/wallet/{walletId}/transaction/{transactionId} | Get get one transaction by id for the specified account   |
 | [**updateOneTransaction**](TransactionApi.md#updateonetransaction) | **PUT** /account/{accountId}/wallet/{walletId}/transaction/{transactionId} | Update one transaction by id for the specified account    |
 
@@ -80,7 +80,7 @@ No authorization required
 
 ## getAllTransactions
 
-> Array&lt;Transaction&gt; getAllTransactions(accountId, walletId)
+> Array&lt;Transaction&gt; getAllTransactions(accountId, walletId, startingDate, endingDate, type, label, startingAmount, endingAmount, sortBy, sort)
 
 Get all disponibles transaction for the specified account
 
@@ -100,8 +100,24 @@ async function example() {
   const body = {
     // string
     accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
-    // string
+    // string (optional)
     walletId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // Date (optional)
+    startingDate: 2013-10-20T19:20:30+01:00,
+    // Date (optional)
+    endingDate: 2013-10-20T19:20:30+01:00,
+    // 'IN' | 'OUT' (optional)
+    type: type_example,
+    // Array<string> (optional)
+    label: ...,
+    // number (optional)
+    startingAmount: 1.2,
+    // number (optional)
+    endingAmount: 1.2,
+    // 'DATE' | 'AMOUNT' (optional)
+    sortBy: sortBy_example,
+    // 'ASC' | 'DESC' (optional)
+    sort: sort_example,
   } satisfies GetAllTransactionsRequest;
 
   try {
@@ -118,10 +134,18 @@ example().catch(console.error);
 
 ### Parameters
 
-| Name          | Type     | Description | Notes                     |
-| ------------- | -------- | ----------- | ------------------------- |
-| **accountId** | `string` |             | [Defaults to `undefined`] |
-| **walletId**  | `string` |             | [Defaults to `undefined`] |
+| Name               | Type             | Description | Notes                                                     |
+| ------------------ | ---------------- | ----------- | --------------------------------------------------------- |
+| **accountId**      | `string`         |             | [Defaults to `undefined`]                                 |
+| **walletId**       | `string`         |             | [Optional] [Defaults to `undefined`]                      |
+| **startingDate**   | `Date`           |             | [Optional] [Defaults to `undefined`]                      |
+| **endingDate**     | `Date`           |             | [Optional] [Defaults to `undefined`]                      |
+| **type**           | `IN`, `OUT`      |             | [Optional] [Defaults to `undefined`] [Enum: IN, OUT]      |
+| **label**          | `Array<string>`  |             | [Optional]                                                |
+| **startingAmount** | `number`         |             | [Optional] [Defaults to `undefined`]                      |
+| **endingAmount**   | `number`         |             | [Optional] [Defaults to `undefined`]                      |
+| **sortBy**         | `DATE`, `AMOUNT` |             | [Optional] [Defaults to `undefined`] [Enum: DATE, AMOUNT] |
+| **sort**           | `ASC`, `DESC`    |             | [Optional] [Defaults to `undefined`] [Enum: ASC, DESC]    |
 
 ### Return type
 

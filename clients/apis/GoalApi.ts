@@ -25,8 +25,8 @@ import * as runtime from "../runtime";
 export interface AccountAccountIdGoalGetRequest {
   accountId: string;
   name?: string;
-  startingDate?: string;
-  endingDate?: string;
+  startingDate?: Date;
+  endingDate?: Date;
 }
 
 export interface AccountAccountIdGoalGoalIdGetRequest {
@@ -65,11 +65,11 @@ export class GoalApi extends runtime.BaseAPI {
     }
 
     if (requestParameters["startingDate"] != null) {
-      queryParameters["startingDate"] = requestParameters["startingDate"];
+      queryParameters["startingDate"] = (requestParameters["startingDate"] as any).toISOString();
     }
 
     if (requestParameters["endingDate"] != null) {
-      queryParameters["endingDate"] = requestParameters["endingDate"];
+      queryParameters["endingDate"] = (requestParameters["endingDate"] as any).toISOString();
     }
 
     const headerParameters: runtime.HTTPHeaders = {};

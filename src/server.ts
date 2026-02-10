@@ -2,7 +2,7 @@ import * as cors from "cors";
 import * as express from "express";
 
 import { errorHandler, securityHandler } from "@/middlewares";
-import { authRouter, labelRouter, swaggerRouter } from "@/routes";
+import { authRouter, labelRouter, swaggerRouter, transactionListRouter, transactionRouter } from "@/routes";
 
 import { walletRouter } from "./routes/wallet-routes";
 
@@ -42,6 +42,9 @@ export const server = async () => {
     app.use(cors(corsOptions));
 
     app.use("/auth", authRouter);
+
+    app.use("/account/:accountId/wallet/:walletId/transaction", securityHandler, transactionRouter);
+    app.use("/account/:accountId/transaction", securityHandler, transactionListRouter);
 
     app.use("/account/:accountId/label", securityHandler, labelRouter);
     app.use("/account/:accountId/wallet", securityHandler, walletRouter);

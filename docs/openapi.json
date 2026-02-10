@@ -586,7 +586,7 @@
         "tags": ["wallet"]
       }
     },
-    "/account/{accountId}/wallet/{walletId}/transaction": {
+    "/account/{accountId}/transaction": {
       "get": {
         "operationId": "getAllTransactions",
         "parameters": [
@@ -602,15 +602,107 @@
             "style": "simple"
           },
           {
-            "explode": false,
-            "in": "path",
+            "explode": true,
+            "in": "query",
             "name": "walletId",
-            "required": true,
+            "required": false,
             "schema": {
               "format": "uuid",
               "type": "string"
             },
-            "style": "simple"
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "startingDate",
+            "required": false,
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "endingDate",
+            "required": false,
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "schema": {
+              "enum": ["IN", "OUT"],
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "label",
+            "required": false,
+            "schema": {
+              "items": {
+                "description": "label ids",
+                "format": "uuid",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "startingAmount",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "endingAmount",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "sortBy",
+            "required": false,
+            "schema": {
+              "enum": ["DATE", "AMOUNT"],
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "enum": ["ASC", "DESC"],
+              "type": "string"
+            },
+            "style": "form"
           }
         ],
         "responses": {
@@ -630,7 +722,9 @@
         },
         "summary": "Get all disponibles transaction for the specified account",
         "tags": ["transaction"]
-      },
+      }
+    },
+    "/account/{accountId}/wallet/{walletId}/transaction": {
       "post": {
         "operationId": "createOneTransaction",
         "parameters": [
@@ -847,7 +941,7 @@
             "name": "startingDate",
             "required": false,
             "schema": {
-              "format": "datetime",
+              "format": "date-time",
               "type": "string"
             },
             "style": "form"
@@ -858,7 +952,7 @@
             "name": "endingDate",
             "required": false,
             "schema": {
-              "format": "datetime",
+              "format": "date-time",
               "type": "string"
             },
             "style": "form"
@@ -1122,7 +1216,7 @@
         "name": "startingDate",
         "required": false,
         "schema": {
-          "format": "datetime",
+          "format": "date-time",
           "type": "string"
         },
         "style": "form"
@@ -1133,7 +1227,88 @@
         "name": "endingDate",
         "required": false,
         "schema": {
-          "format": "datetime",
+          "format": "date-time",
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "TransactionType": {
+        "explode": true,
+        "in": "query",
+        "name": "type",
+        "required": false,
+        "schema": {
+          "enum": ["IN", "OUT"],
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "TransactionLabel": {
+        "explode": true,
+        "in": "query",
+        "name": "label",
+        "required": false,
+        "schema": {
+          "items": {
+            "description": "label ids",
+            "format": "uuid",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "style": "form"
+      },
+      "TransactionWalletId": {
+        "explode": true,
+        "in": "query",
+        "name": "walletId",
+        "required": false,
+        "schema": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "StartingAmount": {
+        "explode": true,
+        "in": "query",
+        "name": "startingAmount",
+        "required": false,
+        "schema": {
+          "format": "double",
+          "type": "number"
+        },
+        "style": "form"
+      },
+      "EndingAmount": {
+        "explode": true,
+        "in": "query",
+        "name": "endingAmount",
+        "required": false,
+        "schema": {
+          "format": "double",
+          "type": "number"
+        },
+        "style": "form"
+      },
+      "TransactionSortBy": {
+        "explode": true,
+        "in": "query",
+        "name": "sortBy",
+        "required": false,
+        "schema": {
+          "enum": ["DATE", "AMOUNT"],
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "TransactionSort": {
+        "explode": true,
+        "in": "query",
+        "name": "sort",
+        "required": false,
+        "schema": {
+          "enum": ["ASC", "DESC"],
           "type": "string"
         },
         "style": "form"
@@ -1175,11 +1350,11 @@
             "type": "string"
           },
           "startingDate": {
-            "format": "datetime",
+            "format": "date-time",
             "type": "string"
           },
           "endingDate": {
-            "format": "datetime",
+            "format": "date-time",
             "type": "string"
           }
         },
@@ -1207,8 +1382,7 @@
       "CreationTransaction": {
         "properties": {
           "date": {
-            "example": "Personal",
-            "format": "datetime",
+            "format": "date-time",
             "type": "string"
           },
           "labels": {
@@ -1286,6 +1460,14 @@
           "type": {
             "enum": ["CASH", "MOBILE_MONEY", "BANK", "DEBT"],
             "type": "string"
+          },
+          "color": {
+            "default": "#00ff00",
+            "example": "#00ff00",
+            "type": "string"
+          },
+          "iconRef": {
+            "type": "string"
           }
         },
         "type": "object"
@@ -1346,6 +1528,14 @@
         "properties": {
           "name": {
             "example": "FOOD",
+            "type": "string"
+          },
+          "color": {
+            "default": "#00ff00",
+            "example": "#00ff00",
+            "type": "string"
+          },
+          "iconRef": {
             "type": "string"
           }
         },

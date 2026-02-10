@@ -7,15 +7,16 @@ export class TransactionMapper {
     const result = {
       accountId: transaction.accountId,
       amount: transaction.amount,
-      date: transaction.date.toString(),
+      date: transaction.date.toISOString(),
       description: transaction.description,
       id: transaction.id,
+      walletId: transaction.walletId,
     };
 
     return result;
   }
   public static create(accountId: string, walletId: string, transaction: RestCreationTransaction): PrismaTransaction {
-    const mapped = {
+    const mapped: PrismaTransaction = {
       id: v4(),
       accountId,
       walletId,
@@ -23,6 +24,8 @@ export class TransactionMapper {
       date: new Date(transaction.date),
       description: transaction.description,
       type: transaction.type,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     return mapped as PrismaTransaction;
   }

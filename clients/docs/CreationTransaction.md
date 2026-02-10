@@ -4,7 +4,7 @@
 
 | Name          | Type                           |
 | ------------- | ------------------------------ |
-| `date`        | string                         |
+| `date`        | Date                           |
 | `labels`      | [Array&lt;Label&gt;](Label.md) |
 | `type`        | string                         |
 | `description` | string                         |
@@ -19,7 +19,7 @@ import type { CreationTransaction } from "";
 
 // TODO: Update the object below with actual values
 const example = {
-  date: Personal,
+  date: null,
   labels: null,
   type: null,
   description: null,

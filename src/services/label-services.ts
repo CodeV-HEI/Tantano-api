@@ -1,12 +1,15 @@
+import { Label as RestLabel } from "@clients";
+
 import { getPrismaClient } from "@/configs";
 import { ApiError } from "@/errors";
-import { ListFilters, NameFilter, RestLabel } from "@/types";
+import { LabelMapper } from "@/mappers";
+import { ListFilters, NameFilter } from "@/types";
 
 export class LabelServices {
   static async create(accountId: string, label: RestLabel) {
     const getLabelByName = await getPrismaClient().label.findFirst({ where: { name: label.name, accountId } });
     if (getLabelByName) throw new ApiError(`Label with name=${label.name} already exist`, 400);
-    return await getPrismaClient().label.create({ data: { name: label.name, id: label.id, accountId } });
+    return await getPrismaClient().label.create({ data: LabelMapper.create(accountId, label) });
   }
   static async update(accountId: string, label: RestLabel) {
     const getLabelById = await getPrismaClient().label.findFirst({ where: { id: label.id, accountId } });
@@ -15,7 +18,7 @@ export class LabelServices {
     const getLabelByName = await getPrismaClient().label.findFirst({ where: { name: label.name, accountId, id: { not: label.id } } });
     if (getLabelByName) throw new ApiError(`Label with name=${label.name} already exist`, 400);
 
-    return await getPrismaClient().label.update({ data: { name: label.name }, where: { id: label.id, accountId } });
+    return await getPrismaClient().label.update({ data: LabelMapper.update(accountId, label), where: { id: label.id, accountId } });
   }
 
   static async getOneById(accountId: string, id: string) {

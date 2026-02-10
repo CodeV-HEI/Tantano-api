@@ -23,10 +23,10 @@ import { LabelFromJSON, LabelFromJSONTyped, LabelToJSON, LabelToJSONTyped } from
 export interface Transaction {
   /**
    *
-   * @type {string}
+   * @type {Date}
    * @memberof Transaction
    */
-  date?: string;
+  date?: Date;
   /**
    *
    * @type {Array<Label>}
@@ -96,7 +96,7 @@ export function TransactionFromJSONTyped(json: any, ignoreDiscriminator: boolean
     return json;
   }
   return {
-    date: json["date"] == null ? undefined : json["date"],
+    date: json["date"] == null ? undefined : new Date(json["date"]),
     labels: json["labels"] == null ? undefined : (json["labels"] as Array<any>).map(LabelFromJSON),
     type: json["type"] == null ? undefined : json["type"],
     description: json["description"] == null ? undefined : json["description"],
@@ -117,7 +117,7 @@ export function TransactionToJSONTyped(value?: Transaction | null, ignoreDiscrim
   }
 
   return {
-    date: value["date"],
+    date: value["date"] == null ? value["date"] : value["date"].toISOString(),
     labels: value["labels"] == null ? undefined : (value["labels"] as Array<any>).map(LabelToJSON),
     type: value["type"],
     description: value["description"],

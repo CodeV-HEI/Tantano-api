@@ -23,7 +23,15 @@ export interface CreateOneTransactionRequest {
 
 export interface GetAllTransactionsRequest {
   accountId: string;
-  walletId: string;
+  walletId?: string;
+  startingDate?: Date;
+  endingDate?: Date;
+  type?: GetAllTransactionsTypeEnum;
+  label?: Array<string>;
+  startingAmount?: number;
+  endingAmount?: number;
+  sortBy?: GetAllTransactionsSortByEnum;
+  sort?: GetAllTransactionsSortEnum;
 }
 
 export interface GetOneTransactionRequest {
@@ -101,17 +109,48 @@ export class TransactionApi extends runtime.BaseAPI {
       throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling getAllTransactions().');
     }
 
-    if (requestParameters["walletId"] == null) {
-      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling getAllTransactions().');
+    const queryParameters: any = {};
+
+    if (requestParameters["walletId"] != null) {
+      queryParameters["walletId"] = requestParameters["walletId"];
     }
 
-    const queryParameters: any = {};
+    if (requestParameters["startingDate"] != null) {
+      queryParameters["startingDate"] = (requestParameters["startingDate"] as any).toISOString();
+    }
+
+    if (requestParameters["endingDate"] != null) {
+      queryParameters["endingDate"] = (requestParameters["endingDate"] as any).toISOString();
+    }
+
+    if (requestParameters["type"] != null) {
+      queryParameters["type"] = requestParameters["type"];
+    }
+
+    if (requestParameters["label"] != null) {
+      queryParameters["label"] = requestParameters["label"];
+    }
+
+    if (requestParameters["startingAmount"] != null) {
+      queryParameters["startingAmount"] = requestParameters["startingAmount"];
+    }
+
+    if (requestParameters["endingAmount"] != null) {
+      queryParameters["endingAmount"] = requestParameters["endingAmount"];
+    }
+
+    if (requestParameters["sortBy"] != null) {
+      queryParameters["sortBy"] = requestParameters["sortBy"];
+    }
+
+    if (requestParameters["sort"] != null) {
+      queryParameters["sort"] = requestParameters["sort"];
+    }
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    let urlPath = `/account/{accountId}/wallet/{walletId}/transaction`;
+    let urlPath = `/account/{accountId}/transaction`;
     urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
-    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
 
     const response = await this.request(
       {
@@ -232,3 +271,28 @@ export class TransactionApi extends runtime.BaseAPI {
     return await response.value();
   }
 }
+
+/**
+ * @export
+ */
+export const GetAllTransactionsTypeEnum = {
+  In: "IN",
+  Out: "OUT",
+} as const;
+export type GetAllTransactionsTypeEnum = (typeof GetAllTransactionsTypeEnum)[keyof typeof GetAllTransactionsTypeEnum];
+/**
+ * @export
+ */
+export const GetAllTransactionsSortByEnum = {
+  Date: "DATE",
+  Amount: "AMOUNT",
+} as const;
+export type GetAllTransactionsSortByEnum = (typeof GetAllTransactionsSortByEnum)[keyof typeof GetAllTransactionsSortByEnum];
+/**
+ * @export
+ */
+export const GetAllTransactionsSortEnum = {
+  Asc: "ASC",
+  Desc: "DESC",
+} as const;
+export type GetAllTransactionsSortEnum = (typeof GetAllTransactionsSortEnum)[keyof typeof GetAllTransactionsSortEnum];

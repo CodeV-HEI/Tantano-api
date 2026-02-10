@@ -1,8 +1,8 @@
-import { NextFunction } from "express";
-
 import { ApiError } from "./api-error";
 
-export const BadRequestError = (message: string, next: NextFunction) => {
-  const badRequestError = new ApiError(message, 400);
-  next(badRequestError);
-};
+const BadRequestErrorStatus = 400;
+export class BadRequestError extends ApiError {
+  constructor(message: string) {
+    super(message, BadRequestErrorStatus);
+  }
+}

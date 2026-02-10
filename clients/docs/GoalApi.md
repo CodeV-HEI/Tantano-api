@@ -33,10 +33,10 @@ async function example() {
     accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string (optional)
     name: name_example,
-    // string (optional)
-    startingDate: startingDate_example,
-    // string (optional)
-    endingDate: endingDate_example,
+    // Date (optional)
+    startingDate: 2013-10-20T19:20:30+01:00,
+    // Date (optional)
+    endingDate: 2013-10-20T19:20:30+01:00,
   } satisfies AccountAccountIdGoalGetRequest;
 
   try {
@@ -57,8 +57,8 @@ example().catch(console.error);
 | ---------------- | -------- | ----------- | ------------------------------------ |
 | **accountId**    | `string` |             | [Defaults to `undefined`]            |
 | **name**         | `string` |             | [Optional] [Defaults to `undefined`] |
-| **startingDate** | `string` |             | [Optional] [Defaults to `undefined`] |
-| **endingDate**   | `string` |             | [Optional] [Defaults to `undefined`] |
+| **startingDate** | `Date`   |             | [Optional] [Defaults to `undefined`] |
+| **endingDate**   | `Date`   |             | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 

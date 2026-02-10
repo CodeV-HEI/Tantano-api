@@ -7,8 +7,8 @@
 | `name`         | string |
 | `amount`       | number |
 | `walletId`     | string |
-| `startingDate` | string |
-| `endingDate`   | string |
+| `startingDate` | Date   |
+| `endingDate`   | Date   |
 | `id`           | string |
 
 ## Example
