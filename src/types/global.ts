@@ -12,3 +12,17 @@ export interface PrismaPaginationInfo {
   pageSize: number;
   elementCount: number;
 }
+
+export interface DateFilter {
+  startingDate?: string;
+  endingDate?: string;
+}
+
+export interface AmountFilter {
+  minAmount?: string;
+  maxAmount?: string;
+}
+
+export interface SortFilter {
+  sort?: "asc" | "desc";
+}

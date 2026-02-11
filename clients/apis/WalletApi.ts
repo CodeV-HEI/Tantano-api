@@ -26,6 +26,11 @@ import {
 } from "../models/index";
 import * as runtime from "../runtime";
 
+export interface AccountAccountIdWalletWalletIdArchivePostRequest {
+  accountId: string;
+  walletId: string;
+}
+
 export interface CreateOneWalletRequest {
   accountId: string;
   creationWallet?: CreationWallet;
@@ -59,6 +64,53 @@ export interface UpdateOneWalletAutomaticIncomeRequest {
  *
  */
 export class WalletApi extends runtime.BaseAPI {
+  /**
+   * Archive one wallet by id
+   */
+  async accountAccountIdWalletWalletIdArchivePostRaw(
+    requestParameters: AccountAccountIdWalletWalletIdArchivePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Wallet>> {
+    if (requestParameters["accountId"] == null) {
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling accountAccountIdWalletWalletIdArchivePost().');
+    }
+
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling accountAccountIdWalletWalletIdArchivePost().');
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/account/{accountId}/wallet/{walletId}/archive`;
+    urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => WalletFromJSON(jsonValue));
+  }
+
+  /**
+   * Archive one wallet by id
+   */
+  async accountAccountIdWalletWalletIdArchivePost(
+    requestParameters: AccountAccountIdWalletWalletIdArchivePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Wallet> {
+    const response = await this.accountAccountIdWalletWalletIdArchivePostRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
   /**
    * Create new wallet for the specified account
    */

@@ -9,3 +9,4 @@ labelRouter.post("/", LabelController.create);
 labelRouter.get("/", paginationHandler, LabelController.getAll);
 labelRouter.put("/:labelId", LabelController.update);
 labelRouter.get("/:labelId", LabelController.getOne);
+labelRouter.post("/:labelId/archive", LabelController.archiveOne);

@@ -43,6 +43,16 @@ export class LabelController {
       res.json({ code: error.status, message: error.message });
     }
   };
+  static readonly archiveOne: RequestHandler = async (req, res, _next) => {
+    try {
+      const { labelId } = req.params;
+      const accountId = (req as any).account.id;
+      const data = await LabelServices.archiveOneById(accountId, labelId as string);
+      res.json(LabelMapper.toRest(data));
+    } catch (error) {
+      res.json({ code: error.status, message: error.message });
+    }
+  };
   static readonly getAll: RequestHandler = async (req, res, _next) => {
     try {
       const { page, pageSize } = req as any;

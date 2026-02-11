@@ -15,6 +15,11 @@ import type { CreationLabel, GetAllLabels200Response, Label } from "../models/in
 import { CreationLabelFromJSON, CreationLabelToJSON, GetAllLabels200ResponseFromJSON, GetAllLabels200ResponseToJSON, LabelFromJSON, LabelToJSON } from "../models/index";
 import * as runtime from "../runtime";
 
+export interface ArchiveOneLabelRequest {
+  accountId: string;
+  labelId: string;
+}
+
 export interface CreateOneLabelRequest {
   accountId: string;
   creationLabel?: CreationLabel;
@@ -42,6 +47,47 @@ export interface UpdateOneLabelRequest {
  *
  */
 export class LabelApi extends runtime.BaseAPI {
+  /**
+   * Archive one label by id
+   */
+  async archiveOneLabelRaw(requestParameters: ArchiveOneLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Label>> {
+    if (requestParameters["accountId"] == null) {
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling archiveOneLabel().');
+    }
+
+    if (requestParameters["labelId"] == null) {
+      throw new runtime.RequiredError("labelId", 'Required parameter "labelId" was null or undefined when calling archiveOneLabel().');
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/account/{accountId}/label/{labelId}/archive`;
+    urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
+    urlPath = urlPath.replace(`{${"labelId"}}`, encodeURIComponent(String(requestParameters["labelId"])));
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => LabelFromJSON(jsonValue));
+  }
+
+  /**
+   * Archive one label by id
+   */
+  async archiveOneLabel(requestParameters: ArchiveOneLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Label> {
+    const response = await this.archiveOneLabelRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
   /**
    * Create new label for the specified account
    */

@@ -2,8 +2,10 @@ import { CreationTransaction as RestCreationTransaction, Transaction as RestTran
 import { Transaction as PrismaTransaction } from "@prisma/client";
 import { v4 } from "uuid";
 
+import { LabelMapper } from "./label-mapper";
+
 export class TransactionMapper {
-  public static toRest(transaction: PrismaTransaction) {
+  public static toRest(transaction: any) {
     const result = {
       accountId: transaction.accountId,
       amount: transaction.amount,
@@ -11,6 +13,7 @@ export class TransactionMapper {
       description: transaction.description,
       id: transaction.id,
       walletId: transaction.walletId,
+      labels: transaction.labels.map(LabelMapper.toRest),
     };
 
     return result;

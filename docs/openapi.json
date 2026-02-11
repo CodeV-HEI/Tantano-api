@@ -311,6 +311,53 @@
         "tags": ["label"]
       }
     },
+    "/account/{accountId}/label/{labelId}/archive": {
+      "post": {
+        "operationId": "archiveOneLabel",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "labelId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Label"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Archive one label by id",
+        "tags": ["label"]
+      }
+    },
     "/account/{accountId}/wallet": {
       "get": {
         "operationId": "getAllWallets",
@@ -526,6 +573,52 @@
         "tags": ["wallet"]
       }
     },
+    "/account/{accountId}/wallet/{walletId}/archive": {
+      "post": {
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "walletId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Wallet"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Archive one wallet by id",
+        "tags": ["wallet"]
+      }
+    },
     "/account/{accountId}/wallet/{walletId}/automaticIncome": {
       "put": {
         "operationId": "updateOneWalletAutomaticIncome",
@@ -663,7 +756,7 @@
           {
             "explode": true,
             "in": "query",
-            "name": "startingAmount",
+            "name": "minAmount",
             "required": false,
             "schema": {
               "format": "double",
@@ -674,7 +767,7 @@
           {
             "explode": true,
             "in": "query",
-            "name": "endingAmount",
+            "name": "maxAmount",
             "required": false,
             "schema": {
               "format": "double",
@@ -688,7 +781,7 @@
             "name": "sortBy",
             "required": false,
             "schema": {
-              "enum": ["DATE", "AMOUNT"],
+              "enum": ["date", "amount"],
               "type": "string"
             },
             "style": "form"
@@ -699,7 +792,7 @@
             "name": "sort",
             "required": false,
             "schema": {
-              "enum": ["ASC", "DESC"],
+              "enum": ["asc", "desc"],
               "type": "string"
             },
             "style": "form"
@@ -785,6 +878,62 @@
       }
     },
     "/account/{accountId}/wallet/{walletId}/transaction/{transactionId}": {
+      "delete": {
+        "operationId": "removeOneTransaction",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "walletId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Transaction"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Delete one transaction and update wallet amount",
+        "tags": ["transaction"]
+      },
       "get": {
         "operationId": "getOneTransaction",
         "parameters": [
@@ -1269,10 +1418,10 @@
         },
         "style": "form"
       },
-      "StartingAmount": {
+      "MinAmount": {
         "explode": true,
         "in": "query",
-        "name": "startingAmount",
+        "name": "minAmount",
         "required": false,
         "schema": {
           "format": "double",
@@ -1280,10 +1429,10 @@
         },
         "style": "form"
       },
-      "EndingAmount": {
+      "MaxAmount": {
         "explode": true,
         "in": "query",
-        "name": "endingAmount",
+        "name": "maxAmount",
         "required": false,
         "schema": {
           "format": "double",
@@ -1297,7 +1446,7 @@
         "name": "sortBy",
         "required": false,
         "schema": {
-          "enum": ["DATE", "AMOUNT"],
+          "enum": ["date", "amount"],
           "type": "string"
         },
         "style": "form"
@@ -1308,7 +1457,7 @@
         "name": "sort",
         "required": false,
         "schema": {
-          "enum": ["ASC", "DESC"],
+          "enum": ["asc", "desc"],
           "type": "string"
         },
         "style": "form"

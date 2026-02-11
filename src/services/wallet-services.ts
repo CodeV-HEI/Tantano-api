@@ -35,13 +35,21 @@ export class WalletServices {
 
   static async getOneById(accountId: string, id: string) {
     const getWalletById = await getPrismaClient().wallet.findFirst({ where: { id, accountId } });
-    if (!getWalletById) throw new ApiError(`Wallet with id=${id} not found`, 404);
+    if (!getWalletById || getWalletById.isArchived) throw new ApiError(`Wallet with id=${id} not found`, 404);
     return getWalletById;
   }
+
+  static async archiveOneById(accountId: string, id: string) {
+    const getWalletById = await getPrismaClient().wallet.findFirst({ where: { id, accountId } });
+    if (!getWalletById || getWalletById.isArchived) throw new ApiError(`Wallet with id=${id} not found`, 404);
+    getWalletById.isArchived = true;
+    return await getPrismaClient().wallet.update({ data: getWalletById, where: { accountId, id } });
+  }
+
   static async getAll(accountId: string, query: ListFilters & NameFilter & WalletFilter) {
     const { page, pageSize, name, isActive, walletType } = query;
 
-    const where = { accountId, name: { contains: name }, ...filterIfNotNull("isActive", isActive), ...filterIfNotNull("type", walletType) };
+    const where = { accountId, name: { contains: name }, ...filterIfNotNull("isActive", isActive), ...filterIfNotNull("type", walletType), isArchived: false };
 
     const values = await getPrismaClient().wallet.findMany({
       take: pageSize,

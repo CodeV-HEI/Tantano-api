@@ -3,7 +3,8 @@ import { Transaction as PrismaTransaction } from "@prisma/client";
 
 import { getPrismaClient } from "@/configs";
 import { ApiError } from "@/errors";
-import { ListFilters } from "@/types";
+import { ListFilters, TransactionFilters } from "@/types";
+import { filterIfNotNull, filterIfNotNullDate, filterIfNotNullNumber } from "@/utilities";
 import { LabelValidator } from "@/validator";
 
 import { LabelServices } from "./label-services";
@@ -40,18 +41,41 @@ export class TransactionServices {
   }
 
   static async getOneById(accountId: string, walletId: string, transactionId: string) {
-    const getTransactionById = await getPrismaClient().transaction.findFirst({ where: { id: transactionId, walletId, accountId } });
+    const getTransactionById = await getPrismaClient().transaction.findFirst({ where: { id: transactionId, walletId, accountId }, include: { labels: true } });
     if (!getTransactionById) throw new ApiError(`Transaction with id=${transactionId} not found`, 404);
     return getTransactionById;
   }
 
-  static async getAll(accountId: string, query: ListFilters) {
-    const { page, pageSize } = query;
+  static async deleteOneById(accountId: string, walletId: string, transactionId: string) {
+    const getTransactionById = await getPrismaClient().transaction.findFirst({ where: { id: transactionId, walletId, accountId } });
+    if (!getTransactionById) throw new ApiError(`Transaction with id=${transactionId} not found`, 404);
+    // update wallet
+    const wallet = await WalletServices.getOneById(accountId, walletId);
+    wallet.amount = wallet.amount + getTransactionById.amount * (getTransactionById.type === "IN" ? 1 : -1);
+    await getPrismaClient().wallet.update({ data: wallet, where: { id: wallet.id, accountId: wallet.accountId } });
+    // update wallet
+    await getPrismaClient().transaction.delete({ where: { id: transactionId, walletId, accountId } });
+    return getTransactionById;
+  }
+
+  static async getAll(accountId: string, query: TransactionFilters) {
+    const { page, pageSize, walletId, endingDate, label, maxAmount, minAmount, sort = "desc", sortBy = "date", startingDate, type } = query;
 
     return await getPrismaClient().transaction.findMany({
       take: pageSize,
       skip: pageSize * (page - 1),
-      where: { accountId },
+      where: {
+        accountId,
+        ...filterIfNotNull("walletId", walletId),
+        ...filterIfNotNull("type", type),
+        ...filterIfNotNull("labels", label, () => ({ some: { id: { in: label } } })),
+        amount: { ...filterIfNotNullNumber("gte", minAmount), ...filterIfNotNullNumber("lte", maxAmount) },
+        date: { ...filterIfNotNullDate("gte", startingDate), ...filterIfNotNullDate("lte", endingDate) },
+      },
+      orderBy: {
+        [sortBy]: sort,
+      },
+      include: { labels: true },
     });
   }
 }

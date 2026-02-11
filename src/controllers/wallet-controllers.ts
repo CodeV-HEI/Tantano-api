@@ -51,6 +51,16 @@ export class WalletController {
       next(err);
     }
   };
+  static readonly archiveOne: RequestHandler = async (req, res, next) => {
+    try {
+      const { walletId } = req.params;
+      const accountId = (req as any).account.id;
+      const data = await WalletServices.getOneById(accountId, walletId as string);
+      res.json(WalletMapper.toRest(data));
+    } catch (err) {
+      next(err);
+    }
+  };
   static readonly getAll: RequestHandler = async (req, res, next) => {
     try {
       const { page, pageSize } = req as any;

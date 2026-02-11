@@ -28,13 +28,19 @@ export interface GetAllTransactionsRequest {
   endingDate?: Date;
   type?: GetAllTransactionsTypeEnum;
   label?: Array<string>;
-  startingAmount?: number;
-  endingAmount?: number;
+  minAmount?: number;
+  maxAmount?: number;
   sortBy?: GetAllTransactionsSortByEnum;
   sort?: GetAllTransactionsSortEnum;
 }
 
 export interface GetOneTransactionRequest {
+  accountId: string;
+  walletId: string;
+  transactionId: string;
+}
+
+export interface RemoveOneTransactionRequest {
   accountId: string;
   walletId: string;
   transactionId: string;
@@ -131,12 +137,12 @@ export class TransactionApi extends runtime.BaseAPI {
       queryParameters["label"] = requestParameters["label"];
     }
 
-    if (requestParameters["startingAmount"] != null) {
-      queryParameters["startingAmount"] = requestParameters["startingAmount"];
+    if (requestParameters["minAmount"] != null) {
+      queryParameters["minAmount"] = requestParameters["minAmount"];
     }
 
-    if (requestParameters["endingAmount"] != null) {
-      queryParameters["endingAmount"] = requestParameters["endingAmount"];
+    if (requestParameters["maxAmount"] != null) {
+      queryParameters["maxAmount"] = requestParameters["maxAmount"];
     }
 
     if (requestParameters["sortBy"] != null) {
@@ -220,6 +226,55 @@ export class TransactionApi extends runtime.BaseAPI {
   }
 
   /**
+   * Delete one transaction and update wallet amount
+   */
+  async removeOneTransactionRaw(
+    requestParameters: RemoveOneTransactionRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Transaction>> {
+    if (requestParameters["accountId"] == null) {
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling removeOneTransaction().');
+    }
+
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling removeOneTransaction().');
+    }
+
+    if (requestParameters["transactionId"] == null) {
+      throw new runtime.RequiredError("transactionId", 'Required parameter "transactionId" was null or undefined when calling removeOneTransaction().');
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/account/{accountId}/wallet/{walletId}/transaction/{transactionId}`;
+    urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
+    urlPath = urlPath.replace(`{${"transactionId"}}`, encodeURIComponent(String(requestParameters["transactionId"])));
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => TransactionFromJSON(jsonValue));
+  }
+
+  /**
+   * Delete one transaction and update wallet amount
+   */
+  async removeOneTransaction(requestParameters: RemoveOneTransactionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Transaction> {
+    const response = await this.removeOneTransactionRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
    * Update one transaction by id for the specified account
    */
   async updateOneTransactionRaw(
@@ -284,15 +339,15 @@ export type GetAllTransactionsTypeEnum = (typeof GetAllTransactionsTypeEnum)[key
  * @export
  */
 export const GetAllTransactionsSortByEnum = {
-  Date: "DATE",
-  Amount: "AMOUNT",
+  Date: "date",
+  Amount: "amount",
 } as const;
 export type GetAllTransactionsSortByEnum = (typeof GetAllTransactionsSortByEnum)[keyof typeof GetAllTransactionsSortByEnum];
 /**
  * @export
  */
 export const GetAllTransactionsSortEnum = {
-  Asc: "ASC",
-  Desc: "DESC",
+  Asc: "asc",
+  Desc: "desc",
 } as const;
 export type GetAllTransactionsSortEnum = (typeof GetAllTransactionsSortEnum)[keyof typeof GetAllTransactionsSortEnum];

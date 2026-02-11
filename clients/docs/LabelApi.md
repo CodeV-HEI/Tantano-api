@@ -2,12 +2,79 @@
 
 All URIs are relative to _http://localhost:8080_
 
-| Method                                           | HTTP request                                 | Description                                          |
-| ------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------- |
-| [**createOneLabel**](LabelApi.md#createonelabel) | **POST** /account/{accountId}/label          | Create new label for the specified account           |
-| [**getAllLabels**](LabelApi.md#getalllabels)     | **GET** /account/{accountId}/label           | Get all disponibles lables for the specified account |
-| [**getOneLabel**](LabelApi.md#getonelabel)       | **GET** /account/{accountId}/label/{labelId} | Get get one label by id for the specified account    |
-| [**updateOneLabel**](LabelApi.md#updateonelabel) | **PUT** /account/{accountId}/label/{labelId} | Update one label by id for the specified account     |
+| Method                                             | HTTP request                                          | Description                                          |
+| -------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------- |
+| [**archiveOneLabel**](LabelApi.md#archiveonelabel) | **POST** /account/{accountId}/label/{labelId}/archive | Archive one label by id                              |
+| [**createOneLabel**](LabelApi.md#createonelabel)   | **POST** /account/{accountId}/label                   | Create new label for the specified account           |
+| [**getAllLabels**](LabelApi.md#getalllabels)       | **GET** /account/{accountId}/label                    | Get all disponibles lables for the specified account |
+| [**getOneLabel**](LabelApi.md#getonelabel)         | **GET** /account/{accountId}/label/{labelId}          | Get get one label by id for the specified account    |
+| [**updateOneLabel**](LabelApi.md#updateonelabel)   | **PUT** /account/{accountId}/label/{labelId}          | Update one label by id for the specified account     |
+
+## archiveOneLabel
+
+> Label archiveOneLabel(accountId, labelId)
+
+Archive one label by id
+
+### Example
+
+```ts
+import {
+  Configuration,
+  LabelApi,
+} from '';
+import type { ArchiveOneLabelRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new LabelApi();
+
+  const body = {
+    // string
+    accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // string
+    labelId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies ArchiveOneLabelRequest;
+
+  try {
+    const data = await api.archiveOneLabel(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+| Name          | Type     | Description | Notes                     |
+| ------------- | -------- | ----------- | ------------------------- |
+| **accountId** | `string` |             | [Defaults to `undefined`] |
+| **labelId**   | `string` |             | [Defaults to `undefined`] |
+
+### Return type
+
+[**Label**](Label.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+| ----------- | ----------- | ---------------- |
+| **200**     | OK          | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 ## createOneLabel
 

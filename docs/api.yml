@@ -138,6 +138,23 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/Label"
+  /account/{accountId}/label/{labelId}/archive:
+    post:
+      tags:
+        - label
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/LabelId"
+      summary: Archive one label by id
+      operationId: archiveOneLabel
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Label"
   /account/{accountId}/wallet:
     get:
       tags:
@@ -225,6 +242,22 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/Wallet"
+  /account/{accountId}/wallet/{walletId}/archive:
+    post:
+      tags:
+        - wallet
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/WalletId"
+      summary: Archive one wallet by id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Wallet"
 
   /account/{accountId}/wallet/{walletId}/automaticIncome:
     put:
@@ -261,8 +294,8 @@ paths:
         - $ref: "#/components/parameters/EndingDate"
         - $ref: "#/components/parameters/TransactionType"
         - $ref: "#/components/parameters/TransactionLabel"
-        - $ref: "#/components/parameters/StartingAmount"
-        - $ref: "#/components/parameters/EndingAmount"
+        - $ref: "#/components/parameters/MinAmount"
+        - $ref: "#/components/parameters/MaxAmount"
         - $ref: "#/components/parameters/TransactionSortBy"
         - $ref: "#/components/parameters/TransactionSort"
       summary: Get all disponibles transaction for the specified account
@@ -333,6 +366,23 @@ paths:
             schema:
               allOf:
                 - $ref: "#/components/schemas/Transaction"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Transaction"
+    delete:
+      tags:
+        - transaction
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/WalletId"
+        - $ref: "#/components/parameters/TransactionId"
+      summary: Delete one transaction and update wallet amount
+      operationId: removeOneTransaction
       responses:
         "200":
           description: OK
@@ -546,15 +596,15 @@ components:
       schema:
         type: string
         format: uuid
-    StartingAmount:
-      name: startingAmount
+    MinAmount:
+      name: minAmount
       required: false
       in: query
       schema:
         type: number
         format: double
-    EndingAmount:
-      name: endingAmount
+    MaxAmount:
+      name: maxAmount
       required: false
       in: query
       schema:
@@ -567,8 +617,8 @@ components:
       schema:
         type: string
         enum:
-          - DATE
-          - AMOUNT
+          - date
+          - amount
     TransactionSort:
       name: sort
       required: false
@@ -576,8 +626,8 @@ components:
       schema:
         type: string
         enum:
-          - ASC
-          - DESC
+          - asc
+          - desc
     Month:
       name: month
       required: false
