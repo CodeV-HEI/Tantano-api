@@ -21,6 +21,7 @@ model Account {
   wallets      Wallet[]
   labels       Label[]
   transactions Transaction[]
+  goals        Goal[]
 }
 
 model Role {
@@ -64,6 +65,7 @@ model Wallet {
   transactions          Transaction[]
   accountId             String
   account               Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  goals                 Goal[]
 }
 
 model Label {
@@ -94,4 +96,20 @@ model Transaction {
   wallet    Wallet?  @relation(fields: [walletId], references: [id], onDelete: Cascade)
   accountId String
   account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model Goal {
+  id         String    @id @default(uuid())
+  name       String
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime  @updatedAt
+  endingDate DateTime  @updatedAt
+  color      String    @default("#00ff00")
+  iconRef    String?
+  isArchived Boolean   @default(false)
+  amount     Int
+  accountId  String
+  walletId   String?
+  wallet     Wallet?   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  account    Account?  @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }

@@ -3,11 +3,10 @@ import { Transaction as PrismaTransaction } from "@prisma/client";
 
 import { getPrismaClient } from "@/configs";
 import { ApiError } from "@/errors";
-import { ListFilters, TransactionFilters } from "@/types";
+import { TransactionFilters } from "@/types";
 import { filterIfNotNull, filterIfNotNullDate, filterIfNotNullNumber } from "@/utilities";
 import { LabelValidator } from "@/validator";
 
-import { LabelServices } from "./label-services";
 import { WalletServices } from "./wallet-services";
 
 export class TransactionServices {
@@ -20,7 +19,7 @@ export class TransactionServices {
       await getPrismaClient().wallet.update({ data: currentWallet, where: { accountId, id: walletId } });
     }
 
-    return (await getPrismaClient().transaction.create({ data: { ...transaction, labels: { connect: mappedLabelsIds } } })) as PrismaTransaction;
+    return (await getPrismaClient().transaction.create({ data: { ...transaction, labels: { connect: mappedLabelsIds } }, include: { labels: true } })) as PrismaTransaction;
   }
 
   static async update(accountId: string, walletId: string, transactionId: string, transaction: PrismaTransaction, labels: Label[]) {
@@ -37,7 +36,11 @@ export class TransactionServices {
 
     const mappedLabelsIds = await LabelValidator.list(accountId, labels);
 
-    return await getPrismaClient().transaction.update({ data: { ...transaction, labels: { set: mappedLabelsIds } }, where: { id: transactionId, accountId, walletId } });
+    return await getPrismaClient().transaction.update({
+      data: { ...transaction, labels: { set: mappedLabelsIds } },
+      where: { id: transactionId, accountId, walletId },
+      include: { labels: true },
+    });
   }
 
   static async getOneById(accountId: string, walletId: string, transactionId: string) {
@@ -47,7 +50,7 @@ export class TransactionServices {
   }
 
   static async deleteOneById(accountId: string, walletId: string, transactionId: string) {
-    const getTransactionById = await getPrismaClient().transaction.findFirst({ where: { id: transactionId, walletId, accountId } });
+    const getTransactionById = await getPrismaClient().transaction.findFirst({ where: { id: transactionId, walletId, accountId }, include: { labels: true } });
     if (!getTransactionById) throw new ApiError(`Transaction with id=${transactionId} not found`, 404);
     // update wallet
     const wallet = await WalletServices.getOneById(accountId, walletId);
