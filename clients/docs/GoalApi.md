@@ -11,7 +11,7 @@ All URIs are relative to _http://localhost:8080_
 
 ## accountAccountIdGoalGet
 
-> AccountAccountIdGoalGet200Response accountAccountIdGoalGet(accountId, name, startingDate, endingDate)
+> AccountAccountIdGoalGet200Response accountAccountIdGoalGet(accountId, walletId, name, startingDate, endingDate)
 
 Get all disponibles goal of one account
 
@@ -31,6 +31,8 @@ async function example() {
   const body = {
     // string
     accountId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // string (optional)
+    walletId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string (optional)
     name: name_example,
     // Date (optional)
@@ -56,6 +58,7 @@ example().catch(console.error);
 | Name             | Type     | Description | Notes                                |
 | ---------------- | -------- | ----------- | ------------------------------------ |
 | **accountId**    | `string` |             | [Defaults to `undefined`]            |
+| **walletId**     | `string` |             | [Optional] [Defaults to `undefined`] |
 | **name**         | `string` |             | [Optional] [Defaults to `undefined`] |
 | **startingDate** | `Date`   |             | [Optional] [Defaults to `undefined`] |
 | **endingDate**   | `Date`   |             | [Optional] [Defaults to `undefined`] |

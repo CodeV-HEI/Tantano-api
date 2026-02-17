@@ -24,6 +24,7 @@ import * as runtime from "../runtime";
 
 export interface AccountAccountIdGoalGetRequest {
   accountId: string;
+  walletId?: string;
   name?: string;
   startingDate?: Date;
   endingDate?: Date;
@@ -59,6 +60,10 @@ export class GoalApi extends runtime.BaseAPI {
     }
 
     const queryParameters: any = {};
+
+    if (requestParameters["walletId"] != null) {
+      queryParameters["walletId"] = requestParameters["walletId"];
+    }
 
     if (requestParameters["name"] != null) {
       queryParameters["name"] = requestParameters["name"];

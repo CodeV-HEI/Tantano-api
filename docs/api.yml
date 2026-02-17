@@ -289,7 +289,7 @@ paths:
         - transaction
       parameters:
         - $ref: "#/components/parameters/AccountId"
-        - $ref: "#/components/parameters/TransactionWalletId"
+        - $ref: "#/components/parameters/QueryWalletId"
         - $ref: "#/components/parameters/StartingDate"
         - $ref: "#/components/parameters/EndingDate"
         - $ref: "#/components/parameters/TransactionType"
@@ -399,6 +399,7 @@ paths:
       summary: Get all disponibles goal of one account
       parameters:
         - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/QueryWalletId"
         - $ref: "#/components/parameters/Name"
         - $ref: "#/components/parameters/StartingDate"
         - $ref: "#/components/parameters/EndingDate"
@@ -589,7 +590,7 @@ components:
           description: label ids
           type: string
           format: uuid
-    TransactionWalletId:
+    QueryWalletId:
       name: walletId
       required: false
       in: query
@@ -660,6 +661,10 @@ components:
         endingDate:
           type: string
           format: date-time
+        color:
+          type: string
+        iconRef:
+          type: string
     Goal:
       type: object
       allOf:

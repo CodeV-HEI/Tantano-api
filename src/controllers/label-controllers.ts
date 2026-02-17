@@ -27,7 +27,7 @@ export class LabelController {
 
       LabelValidator.update(accountId, label);
 
-      const data = await LabelServices.create(accountId, { ...label, id: labelId });
+      const data = await LabelServices.update(accountId, { ...label, id: labelId });
       res.json(LabelMapper.toRest(data));
     } catch (error) {
       res.json({ code: error.status, message: error.message });

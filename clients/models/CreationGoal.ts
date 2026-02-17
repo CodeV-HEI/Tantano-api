@@ -49,6 +49,18 @@ export interface CreationGoal {
    * @memberof CreationGoal
    */
   endingDate?: Date;
+  /**
+   *
+   * @type {string}
+   * @memberof CreationGoal
+   */
+  color?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CreationGoal
+   */
+  iconRef?: string;
 }
 
 /**
@@ -72,6 +84,8 @@ export function CreationGoalFromJSONTyped(json: any, ignoreDiscriminator: boolea
     walletId: json["walletId"] == null ? undefined : json["walletId"],
     startingDate: json["startingDate"] == null ? undefined : new Date(json["startingDate"]),
     endingDate: json["endingDate"] == null ? undefined : new Date(json["endingDate"]),
+    color: json["color"] == null ? undefined : json["color"],
+    iconRef: json["iconRef"] == null ? undefined : json["iconRef"],
   };
 }
 
@@ -90,5 +104,7 @@ export function CreationGoalToJSONTyped(value?: CreationGoal | null, ignoreDiscr
     walletId: value["walletId"],
     startingDate: value["startingDate"] == null ? value["startingDate"] : value["startingDate"].toISOString(),
     endingDate: value["endingDate"] == null ? value["endingDate"] : value["endingDate"].toISOString(),
+    color: value["color"],
+    iconRef: value["iconRef"],
   };
 }

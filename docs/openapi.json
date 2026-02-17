@@ -1077,6 +1077,17 @@
           {
             "explode": true,
             "in": "query",
+            "name": "walletId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
             "name": "name",
             "required": false,
             "schema": {
@@ -1407,7 +1418,7 @@
         },
         "style": "form"
       },
-      "TransactionWalletId": {
+      "QueryWalletId": {
         "explode": true,
         "in": "query",
         "name": "walletId",
@@ -1504,6 +1515,12 @@
           },
           "endingDate": {
             "format": "date-time",
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "iconRef": {
             "type": "string"
           }
         },

@@ -9,6 +9,8 @@
 | `walletId`     | string |
 | `startingDate` | Date   |
 | `endingDate`   | Date   |
+| `color`        | string |
+| `iconRef`      | string |
 | `id`           | string |
 
 ## Example
@@ -23,6 +25,8 @@ const example = {
   "walletId": null,
   "startingDate": null,
   "endingDate": null,
+  "color": null,
+  "iconRef": null,
   "id": null,
 } satisfies Goal
 
