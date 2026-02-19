@@ -1062,6 +1062,7 @@
     },
     "/account/{accountId}/goal": {
       "get": {
+        "operationId": "getAllGoals",
         "parameters": [
           {
             "explode": false,
@@ -1098,7 +1099,29 @@
           {
             "explode": true,
             "in": "query",
-            "name": "startingDate",
+            "name": "minAmount",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "maxAmount",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "startingDateBeginning",
             "required": false,
             "schema": {
               "format": "date-time",
@@ -1109,10 +1132,43 @@
           {
             "explode": true,
             "in": "query",
-            "name": "endingDate",
+            "name": "startingDateEnding",
             "required": false,
             "schema": {
               "format": "date-time",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "endingDateBeginning",
+            "required": false,
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "endingDateEnding",
+            "required": false,
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "enum": ["asc", "desc"],
               "type": "string"
             },
             "style": "form"
@@ -1123,7 +1179,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/_account__accountId__goal_get_200_response"
+                  "$ref": "#/components/schemas/getAllGoals_200_response"
                 }
               }
             },
@@ -1132,13 +1188,27 @@
         },
         "summary": "Get all disponibles goal of one account",
         "tags": ["goal"]
-      },
+      }
+    },
+    "/account/{accountId}/wallet/{walletId}/goal": {
       "post": {
+        "operationId": "createOneGoal",
         "parameters": [
           {
             "explode": false,
             "in": "path",
             "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "walletId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -1165,7 +1235,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/_account__accountId__goal_get_200_response"
+                  "$ref": "#/components/schemas/getAllGoals_200_response"
                 }
               }
             },
@@ -1176,13 +1246,36 @@
         "tags": ["goal"]
       }
     },
-    "/account/{accountId}/goal/{goalId}": {
+    "/account/{accountId}/wallet/{walletId}/goal/{goalId}": {
       "get": {
+        "operationId": "getOneGoal",
         "parameters": [
           {
             "explode": false,
             "in": "path",
             "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "walletId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "goalId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -1212,11 +1305,34 @@
         "tags": ["goal"]
       },
       "put": {
+        "operationId": "updateOneGoal",
         "parameters": [
           {
             "explode": false,
             "in": "path",
             "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "walletId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "goalId",
             "required": true,
             "schema": {
               "format": "uuid",
@@ -1256,6 +1372,64 @@
           }
         },
         "summary": "update one goal of one account",
+        "tags": ["goal"]
+      }
+    },
+    "/account/{accountId}/wallet/{walletId}/goal/{goalId}/archive": {
+      "post": {
+        "operationId": "archiveOneGoal",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "labelId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "walletId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Goal"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Archive one label by id",
         "tags": ["goal"]
       }
     }
@@ -1310,6 +1484,17 @@
         "explode": false,
         "in": "path",
         "name": "walletId",
+        "required": true,
+        "schema": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "style": "simple"
+      },
+      "GoalId": {
+        "explode": false,
+        "in": "path",
+        "name": "goalId",
         "required": true,
         "schema": {
           "format": "uuid",
@@ -1392,6 +1577,50 @@
         },
         "style": "form"
       },
+      "StartingDateBeginning": {
+        "explode": true,
+        "in": "query",
+        "name": "startingDateBeginning",
+        "required": false,
+        "schema": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "StartingDateEnding": {
+        "explode": true,
+        "in": "query",
+        "name": "startingDateEnding",
+        "required": false,
+        "schema": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "EndingDateBeginning": {
+        "explode": true,
+        "in": "query",
+        "name": "endingDateBeginning",
+        "required": false,
+        "schema": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "EndingDateEnding": {
+        "explode": true,
+        "in": "query",
+        "name": "endingDateEnding",
+        "required": false,
+        "schema": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "style": "form"
+      },
       "TransactionType": {
         "explode": true,
         "in": "query",
@@ -1462,7 +1691,18 @@
         },
         "style": "form"
       },
-      "TransactionSort": {
+      "GoalSortBy": {
+        "explode": true,
+        "in": "query",
+        "name": "sortBy",
+        "required": false,
+        "schema": {
+          "enum": ["startingDate", "endingDate", "name", "createdAt", "amount"],
+          "type": "string"
+        },
+        "style": "form"
+      },
+      "Sort": {
         "explode": true,
         "in": "query",
         "name": "sort",
@@ -1499,6 +1739,10 @@
     "schemas": {
       "CreationGoal": {
         "properties": {
+          "accountId": {
+            "format": "uuid",
+            "type": "string"
+          },
           "name": {
             "example": "Frebruary resolution",
             "type": "string"
@@ -1819,7 +2063,7 @@
         },
         "type": "object"
       },
-      "_account__accountId__goal_get_200_response": {
+      "getAllGoals_200_response": {
         "properties": {
           "pagination": {
             "allOf": [

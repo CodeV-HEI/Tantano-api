@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from "./AccountAccountIdGoalGet200Response";
 export * from "./CreationGoal";
 export * from "./CreationLabel";
 export * from "./CreationTransaction";
 export * from "./CreationWallet";
 export * from "./Credentials";
+export * from "./GetAllGoals200Response";
 export * from "./GetAllLabels200Response";
 export * from "./GetAllWallets200Response";
 export * from "./Goal";

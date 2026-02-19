@@ -11,37 +11,46 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { AccountAccountIdGoalGet200Response, CreationGoal, Goal } from "../models/index";
-import {
-  AccountAccountIdGoalGet200ResponseFromJSON,
-  AccountAccountIdGoalGet200ResponseToJSON,
-  CreationGoalFromJSON,
-  CreationGoalToJSON,
-  GoalFromJSON,
-  GoalToJSON,
-} from "../models/index";
+import type { CreationGoal, GetAllGoals200Response, Goal } from "../models/index";
+import { CreationGoalFromJSON, CreationGoalToJSON, GetAllGoals200ResponseFromJSON, GetAllGoals200ResponseToJSON, GoalFromJSON, GoalToJSON } from "../models/index";
 import * as runtime from "../runtime";
 
-export interface AccountAccountIdGoalGetRequest {
+export interface ArchiveOneGoalRequest {
+  accountId: string;
+  labelId: string;
+  walletId: string;
+}
+
+export interface CreateOneGoalRequest {
+  accountId: string;
+  walletId: string;
+  creationGoal?: CreationGoal;
+}
+
+export interface GetAllGoalsRequest {
   accountId: string;
   walletId?: string;
   name?: string;
-  startingDate?: Date;
-  endingDate?: Date;
+  minAmount?: number;
+  maxAmount?: number;
+  startingDateBeginning?: Date;
+  startingDateEnding?: Date;
+  endingDateBeginning?: Date;
+  endingDateEnding?: Date;
+  sort?: GetAllGoalsSortEnum;
 }
 
-export interface AccountAccountIdGoalGoalIdGetRequest {
+export interface GetOneGoalRequest {
   accountId: string;
+  walletId: string;
+  goalId: string;
 }
 
-export interface AccountAccountIdGoalGoalIdPutRequest {
+export interface UpdateOneGoalRequest {
   accountId: string;
+  walletId: string;
+  goalId: string;
   goal?: Goal;
-}
-
-export interface AccountAccountIdGoalPostRequest {
-  accountId: string;
-  creationGoal?: CreationGoal;
 }
 
 /**
@@ -49,14 +58,104 @@ export interface AccountAccountIdGoalPostRequest {
  */
 export class GoalApi extends runtime.BaseAPI {
   /**
+   * Archive one label by id
+   */
+  async archiveOneGoalRaw(requestParameters: ArchiveOneGoalRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Goal>> {
+    if (requestParameters["accountId"] == null) {
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling archiveOneGoal().');
+    }
+
+    if (requestParameters["labelId"] == null) {
+      throw new runtime.RequiredError("labelId", 'Required parameter "labelId" was null or undefined when calling archiveOneGoal().');
+    }
+
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling archiveOneGoal().');
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/account/{accountId}/wallet/{walletId}/goal/{goalId}/archive`;
+    urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
+    urlPath = urlPath.replace(`{${"labelId"}}`, encodeURIComponent(String(requestParameters["labelId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GoalFromJSON(jsonValue));
+  }
+
+  /**
+   * Archive one label by id
+   */
+  async archiveOneGoal(requestParameters: ArchiveOneGoalRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Goal> {
+    const response = await this.archiveOneGoalRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * create new goal for one account
+   */
+  async createOneGoalRaw(
+    requestParameters: CreateOneGoalRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<GetAllGoals200Response>> {
+    if (requestParameters["accountId"] == null) {
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling createOneGoal().');
+    }
+
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling createOneGoal().');
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    let urlPath = `/account/{accountId}/wallet/{walletId}/goal`;
+    urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: CreationGoalToJSON(requestParameters["creationGoal"]),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetAllGoals200ResponseFromJSON(jsonValue));
+  }
+
+  /**
+   * create new goal for one account
+   */
+  async createOneGoal(requestParameters: CreateOneGoalRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAllGoals200Response> {
+    const response = await this.createOneGoalRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
    * Get all disponibles goal of one account
    */
-  async accountAccountIdGoalGetRaw(
-    requestParameters: AccountAccountIdGoalGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<AccountAccountIdGoalGet200Response>> {
+  async getAllGoalsRaw(requestParameters: GetAllGoalsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAllGoals200Response>> {
     if (requestParameters["accountId"] == null) {
-      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling accountAccountIdGoalGet().');
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling getAllGoals().');
     }
 
     const queryParameters: any = {};
@@ -69,12 +168,32 @@ export class GoalApi extends runtime.BaseAPI {
       queryParameters["name"] = requestParameters["name"];
     }
 
-    if (requestParameters["startingDate"] != null) {
-      queryParameters["startingDate"] = (requestParameters["startingDate"] as any).toISOString();
+    if (requestParameters["minAmount"] != null) {
+      queryParameters["minAmount"] = requestParameters["minAmount"];
     }
 
-    if (requestParameters["endingDate"] != null) {
-      queryParameters["endingDate"] = (requestParameters["endingDate"] as any).toISOString();
+    if (requestParameters["maxAmount"] != null) {
+      queryParameters["maxAmount"] = requestParameters["maxAmount"];
+    }
+
+    if (requestParameters["startingDateBeginning"] != null) {
+      queryParameters["startingDateBeginning"] = (requestParameters["startingDateBeginning"] as any).toISOString();
+    }
+
+    if (requestParameters["startingDateEnding"] != null) {
+      queryParameters["startingDateEnding"] = (requestParameters["startingDateEnding"] as any).toISOString();
+    }
+
+    if (requestParameters["endingDateBeginning"] != null) {
+      queryParameters["endingDateBeginning"] = (requestParameters["endingDateBeginning"] as any).toISOString();
+    }
+
+    if (requestParameters["endingDateEnding"] != null) {
+      queryParameters["endingDateEnding"] = (requestParameters["endingDateEnding"] as any).toISOString();
+    }
+
+    if (requestParameters["sort"] != null) {
+      queryParameters["sort"] = requestParameters["sort"];
     }
 
     const headerParameters: runtime.HTTPHeaders = {};
@@ -92,37 +211,41 @@ export class GoalApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) => AccountAccountIdGoalGet200ResponseFromJSON(jsonValue));
+    return new runtime.JSONApiResponse(response, (jsonValue) => GetAllGoals200ResponseFromJSON(jsonValue));
   }
 
   /**
    * Get all disponibles goal of one account
    */
-  async accountAccountIdGoalGet(
-    requestParameters: AccountAccountIdGoalGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<AccountAccountIdGoalGet200Response> {
-    const response = await this.accountAccountIdGoalGetRaw(requestParameters, initOverrides);
+  async getAllGoals(requestParameters: GetAllGoalsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAllGoals200Response> {
+    const response = await this.getAllGoalsRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
   /**
    * Get one goal of one account by it\'s id
    */
-  async accountAccountIdGoalGoalIdGetRaw(
-    requestParameters: AccountAccountIdGoalGoalIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Goal>> {
+  async getOneGoalRaw(requestParameters: GetOneGoalRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Goal>> {
     if (requestParameters["accountId"] == null) {
-      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling accountAccountIdGoalGoalIdGet().');
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling getOneGoal().');
+    }
+
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling getOneGoal().');
+    }
+
+    if (requestParameters["goalId"] == null) {
+      throw new runtime.RequiredError("goalId", 'Required parameter "goalId" was null or undefined when calling getOneGoal().');
     }
 
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    let urlPath = `/account/{accountId}/goal/{goalId}`;
+    let urlPath = `/account/{accountId}/wallet/{walletId}/goal/{goalId}`;
     urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
+    urlPath = urlPath.replace(`{${"goalId"}}`, encodeURIComponent(String(requestParameters["goalId"])));
 
     const response = await this.request(
       {
@@ -140,20 +263,25 @@ export class GoalApi extends runtime.BaseAPI {
   /**
    * Get one goal of one account by it\'s id
    */
-  async accountAccountIdGoalGoalIdGet(requestParameters: AccountAccountIdGoalGoalIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Goal> {
-    const response = await this.accountAccountIdGoalGoalIdGetRaw(requestParameters, initOverrides);
+  async getOneGoal(requestParameters: GetOneGoalRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Goal> {
+    const response = await this.getOneGoalRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
   /**
    * update one goal of one account
    */
-  async accountAccountIdGoalGoalIdPutRaw(
-    requestParameters: AccountAccountIdGoalGoalIdPutRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Goal>> {
+  async updateOneGoalRaw(requestParameters: UpdateOneGoalRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Goal>> {
     if (requestParameters["accountId"] == null) {
-      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling accountAccountIdGoalGoalIdPut().');
+      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling updateOneGoal().');
+    }
+
+    if (requestParameters["walletId"] == null) {
+      throw new runtime.RequiredError("walletId", 'Required parameter "walletId" was null or undefined when calling updateOneGoal().');
+    }
+
+    if (requestParameters["goalId"] == null) {
+      throw new runtime.RequiredError("goalId", 'Required parameter "goalId" was null or undefined when calling updateOneGoal().');
     }
 
     const queryParameters: any = {};
@@ -162,8 +290,10 @@ export class GoalApi extends runtime.BaseAPI {
 
     headerParameters["Content-Type"] = "application/json";
 
-    let urlPath = `/account/{accountId}/goal/{goalId}`;
+    let urlPath = `/account/{accountId}/wallet/{walletId}/goal/{goalId}`;
     urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
+    urlPath = urlPath.replace(`{${"walletId"}}`, encodeURIComponent(String(requestParameters["walletId"])));
+    urlPath = urlPath.replace(`{${"goalId"}}`, encodeURIComponent(String(requestParameters["goalId"])));
 
     const response = await this.request(
       {
@@ -182,53 +312,17 @@ export class GoalApi extends runtime.BaseAPI {
   /**
    * update one goal of one account
    */
-  async accountAccountIdGoalGoalIdPut(requestParameters: AccountAccountIdGoalGoalIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Goal> {
-    const response = await this.accountAccountIdGoalGoalIdPutRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * create new goal for one account
-   */
-  async accountAccountIdGoalPostRaw(
-    requestParameters: AccountAccountIdGoalPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<AccountAccountIdGoalGet200Response>> {
-    if (requestParameters["accountId"] == null) {
-      throw new runtime.RequiredError("accountId", 'Required parameter "accountId" was null or undefined when calling accountAccountIdGoalPost().');
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json";
-
-    let urlPath = `/account/{accountId}/goal`;
-    urlPath = urlPath.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters["accountId"])));
-
-    const response = await this.request(
-      {
-        path: urlPath,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-        body: CreationGoalToJSON(requestParameters["creationGoal"]),
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) => AccountAccountIdGoalGet200ResponseFromJSON(jsonValue));
-  }
-
-  /**
-   * create new goal for one account
-   */
-  async accountAccountIdGoalPost(
-    requestParameters: AccountAccountIdGoalPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<AccountAccountIdGoalGet200Response> {
-    const response = await this.accountAccountIdGoalPostRaw(requestParameters, initOverrides);
+  async updateOneGoal(requestParameters: UpdateOneGoalRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Goal> {
+    const response = await this.updateOneGoalRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }
+
+/**
+ * @export
+ */
+export const GetAllGoalsSortEnum = {
+  Asc: "asc",
+  Desc: "desc",
+} as const;
+export type GetAllGoalsSortEnum = (typeof GetAllGoalsSortEnum)[keyof typeof GetAllGoalsSortEnum];

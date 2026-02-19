@@ -99,17 +99,18 @@ model Transaction {
 }
 
 model Goal {
-  id         String    @id @default(uuid())
-  name       String
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime  @updatedAt
-  endingDate DateTime  @updatedAt
-  color      String    @default("#00ff00")
-  iconRef    String?
-  isArchived Boolean   @default(false)
-  amount     Int
-  accountId  String
-  walletId   String?
-  wallet     Wallet?   @relation(fields: [walletId], references: [id], onDelete: Cascade)
-  account    Account?  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  id           String    @id @default(uuid())
+  name         String
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime  @updatedAt
+  startingDate DateTime
+  endingDate   DateTime
+  color        String    @default("#00ff00")
+  iconRef      String?
+  isArchived   Boolean   @default(false)
+  amount       Int
+  accountId    String
+  walletId     String?
+  wallet       Wallet?   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  account      Account?  @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }

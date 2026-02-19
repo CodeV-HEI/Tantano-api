@@ -4,6 +4,7 @@
 
 | Name           | Type   |
 | -------------- | ------ |
+| `accountId`    | string |
 | `name`         | string |
 | `amount`       | number |
 | `walletId`     | string |
@@ -20,6 +21,7 @@ import type { Goal } from ''
 
 // TODO: Update the object below with actual values
 const example = {
+  "accountId": null,
   "name": Frebruary resolution,
   "amount": null,
   "walletId": null,

@@ -2,7 +2,7 @@ import * as cors from "cors";
 import * as express from "express";
 
 import { errorHandler, securityHandler } from "@/middlewares";
-import { authRouter, labelRouter, swaggerRouter, transactionListRouter, transactionRouter } from "@/routes";
+import { authRouter, goalListRouter, goalRouter, labelRouter, swaggerRouter, transactionListRouter, transactionRouter } from "@/routes";
 
 import { walletRouter } from "./routes/wallet-routes";
 
@@ -48,9 +48,14 @@ export const server = async () => {
 
     app.use("/account/:accountId/label", securityHandler, labelRouter);
     app.use("/account/:accountId/wallet", securityHandler, walletRouter);
+
     app.get("/", (_req: Request, res: Response) => {
       res.redirect("/api-docs");
     });
+
+    app.use("/account/:accountId/wallet/:walletId/goal", securityHandler, goalRouter);
+    app.use("/account/:accountId/goal", securityHandler, goalListRouter);
+
     app.use("/", swaggerRouter);
 
     app.listen(PORT, () => {

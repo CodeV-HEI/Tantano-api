@@ -1,4 +1,4 @@
-# AccountAccountIdGoalGet200Response
+# GetAllGoals200Response
 
 ## Properties
 
@@ -10,13 +10,13 @@
 ## Example
 
 ```typescript
-import type { AccountAccountIdGoalGet200Response } from "";
+import type { GetAllGoals200Response } from "";
 
 // TODO: Update the object below with actual values
 const example = {
   pagination: null,
   values: null,
-} satisfies AccountAccountIdGoalGet200Response;
+} satisfies GetAllGoals200Response;
 
 console.log(example);
 
@@ -25,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example);
 console.log(exampleJSON);
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as AccountAccountIdGoalGet200Response;
+const exampleParsed = JSON.parse(exampleJSON) as GetAllGoals200Response;
 console.log(exampleParsed);
 ```
 

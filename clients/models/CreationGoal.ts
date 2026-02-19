@@ -24,6 +24,12 @@ export interface CreationGoal {
    * @type {string}
    * @memberof CreationGoal
    */
+  accountId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CreationGoal
+   */
   name?: string;
   /**
    *
@@ -79,6 +85,7 @@ export function CreationGoalFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return json;
   }
   return {
+    accountId: json["accountId"] == null ? undefined : json["accountId"],
     name: json["name"] == null ? undefined : json["name"],
     amount: json["amount"] == null ? undefined : json["amount"],
     walletId: json["walletId"] == null ? undefined : json["walletId"],
@@ -99,6 +106,7 @@ export function CreationGoalToJSONTyped(value?: CreationGoal | null, ignoreDiscr
   }
 
   return {
+    accountId: value["accountId"],
     name: value["name"],
     amount: value["amount"],
     walletId: value["walletId"],

@@ -20,35 +20,35 @@ import { PaginationResultFromJSON, PaginationResultFromJSONTyped, PaginationResu
 /**
  *
  * @export
- * @interface AccountAccountIdGoalGet200Response
+ * @interface GetAllGoals200Response
  */
-export interface AccountAccountIdGoalGet200Response {
+export interface GetAllGoals200Response {
   /**
    *
    * @type {PaginationResult}
-   * @memberof AccountAccountIdGoalGet200Response
+   * @memberof GetAllGoals200Response
    */
   pagination?: PaginationResult;
   /**
    *
    * @type {Array<Goal>}
-   * @memberof AccountAccountIdGoalGet200Response
+   * @memberof GetAllGoals200Response
    */
   values?: Array<Goal>;
 }
 
 /**
- * Check if a given object implements the AccountAccountIdGoalGet200Response interface.
+ * Check if a given object implements the GetAllGoals200Response interface.
  */
-export function instanceOfAccountAccountIdGoalGet200Response(value: object): value is AccountAccountIdGoalGet200Response {
+export function instanceOfGetAllGoals200Response(value: object): value is GetAllGoals200Response {
   return true;
 }
 
-export function AccountAccountIdGoalGet200ResponseFromJSON(json: any): AccountAccountIdGoalGet200Response {
-  return AccountAccountIdGoalGet200ResponseFromJSONTyped(json, false);
+export function GetAllGoals200ResponseFromJSON(json: any): GetAllGoals200Response {
+  return GetAllGoals200ResponseFromJSONTyped(json, false);
 }
 
-export function AccountAccountIdGoalGet200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccountAccountIdGoalGet200Response {
+export function GetAllGoals200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetAllGoals200Response {
   if (json == null) {
     return json;
   }
@@ -58,11 +58,11 @@ export function AccountAccountIdGoalGet200ResponseFromJSONTyped(json: any, ignor
   };
 }
 
-export function AccountAccountIdGoalGet200ResponseToJSON(json: any): AccountAccountIdGoalGet200Response {
-  return AccountAccountIdGoalGet200ResponseToJSONTyped(json, false);
+export function GetAllGoals200ResponseToJSON(json: any): GetAllGoals200Response {
+  return GetAllGoals200ResponseToJSONTyped(json, false);
 }
 
-export function AccountAccountIdGoalGet200ResponseToJSONTyped(value?: AccountAccountIdGoalGet200Response | null, ignoreDiscriminator: boolean = false): any {
+export function GetAllGoals200ResponseToJSONTyped(value?: GetAllGoals200Response | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

@@ -297,7 +297,7 @@ paths:
         - $ref: "#/components/parameters/MinAmount"
         - $ref: "#/components/parameters/MaxAmount"
         - $ref: "#/components/parameters/TransactionSortBy"
-        - $ref: "#/components/parameters/TransactionSort"
+        - $ref: "#/components/parameters/Sort"
       summary: Get all disponibles transaction for the specified account
       operationId: getAllTransactions
       responses:
@@ -397,12 +397,18 @@ paths:
       tags:
         - goal
       summary: Get all disponibles goal of one account
+      operationId: getAllGoals
       parameters:
         - $ref: "#/components/parameters/AccountId"
         - $ref: "#/components/parameters/QueryWalletId"
         - $ref: "#/components/parameters/Name"
-        - $ref: "#/components/parameters/StartingDate"
-        - $ref: "#/components/parameters/EndingDate"
+        - $ref: "#/components/parameters/MinAmount"
+        - $ref: "#/components/parameters/MaxAmount"
+        - $ref: "#/components/parameters/StartingDateBeginning"
+        - $ref: "#/components/parameters/StartingDateEnding"
+        - $ref: "#/components/parameters/EndingDateBeginning"
+        - $ref: "#/components/parameters/EndingDateEnding"
+        - $ref: "#/components/parameters/Sort"
       responses:
         "200":
           description: OK
@@ -417,12 +423,16 @@ paths:
                   values:
                     items:
                       $ref: "#/components/schemas/Goal"
+
+  /account/{accountId}/wallet/{walletId}/goal:
     post:
       tags:
         - goal
       summary: create new goal for one account
+      operationId: createOneGoal
       parameters:
         - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/WalletId"
       requestBody:
         content:
           application/json:
@@ -444,13 +454,16 @@ paths:
                   values:
                     items:
                       $ref: "#/components/schemas/Goal"
-  /account/{accountId}/goal/{goalId}:
+  /account/{accountId}/wallet/{walletId}/goal/{goalId}:
     get:
       tags:
         - goal
       summary: Get one goal of one account by it's id
+      operationId: getOneGoal
       parameters:
         - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/WalletId"
+        - $ref: "#/components/parameters/GoalId"
       responses:
         "200":
           description: OK
@@ -464,8 +477,11 @@ paths:
       tags:
         - goal
       summary: update one goal of one account
+      operationId: updateOneGoal
       parameters:
         - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/WalletId"
+        - $ref: "#/components/parameters/GoalId"
       requestBody:
         content:
           application/json:
@@ -480,6 +496,24 @@ paths:
             application/json:
               schema:
                 type: object
+                allOf:
+                  - $ref: "#/components/schemas/Goal"
+  /account/{accountId}/wallet/{walletId}/goal/{goalId}/archive:
+    post:
+      tags:
+        - goal
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/LabelId"
+        - $ref: "#/components/parameters/WalletId"
+      summary: Archive one label by id
+      operationId: archiveOneGoal
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
                 allOf:
                   - $ref: "#/components/schemas/Goal"
 
@@ -515,6 +549,13 @@ components:
         format: uuid
     WalletId:
       name: walletId
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+    GoalId:
+      name: goalId
       required: true
       in: path
       schema:
@@ -571,6 +612,34 @@ components:
       schema:
         type: string
         format: date-time
+    StartingDateBeginning:
+      name: startingDateBeginning
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    StartingDateEnding:
+      name: startingDateEnding
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    EndingDateBeginning:
+      name: endingDateBeginning
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    EndingDateEnding:
+      name: endingDateEnding
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
     TransactionType:
       name: type
       required: false
@@ -620,7 +689,19 @@ components:
         enum:
           - date
           - amount
-    TransactionSort:
+    GoalSortBy:
+      name: sortBy
+      required: false
+      in: query
+      schema:
+        type: string
+        enum:
+          - startingDate
+          - endingDate
+          - name
+          - createdAt
+          - amount
+    Sort:
       name: sort
       required: false
       in: query
@@ -648,6 +729,9 @@ components:
     CreationGoal:
       type: object
       properties:
+        accountId:
+          type: string
+          format: uuid
         name:
           type: string
           example: Frebruary resolution

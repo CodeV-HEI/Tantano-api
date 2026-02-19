@@ -8,12 +8,12 @@ import { LabelValidator } from "@/validator";
 export class LabelController {
   static readonly create: RequestHandler = async (req, res, _next) => {
     try {
-      const { name } = req.body;
+      const label = req.body;
       const accountId = (req as any).account.id;
 
-      LabelValidator.create({ name });
+      LabelValidator.create(label);
 
-      const data = await LabelServices.create(accountId, { id: v4(), name });
+      const data = await LabelServices.create(accountId, { id: v4(), ...label });
       res.json(LabelMapper.toRest(data));
     } catch (error) {
       res.json({ code: error.status, message: error.message });

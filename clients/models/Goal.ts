@@ -24,6 +24,12 @@ export interface Goal {
    * @type {string}
    * @memberof Goal
    */
+  accountId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Goal
+   */
   name?: string;
   /**
    *
@@ -85,6 +91,7 @@ export function GoalFromJSONTyped(json: any, ignoreDiscriminator: boolean): Goal
     return json;
   }
   return {
+    accountId: json["accountId"] == null ? undefined : json["accountId"],
     name: json["name"] == null ? undefined : json["name"],
     amount: json["amount"] == null ? undefined : json["amount"],
     walletId: json["walletId"] == null ? undefined : json["walletId"],
@@ -106,6 +113,7 @@ export function GoalToJSONTyped(value?: Goal | null, ignoreDiscriminator: boolea
   }
 
   return {
+    accountId: value["accountId"],
     name: value["name"],
     amount: value["amount"],
     walletId: value["walletId"],
