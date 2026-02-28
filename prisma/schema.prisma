@@ -134,4 +134,5 @@ model ProjectTransaction {
   projectId     String
   accountId     String
   project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  account       Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
