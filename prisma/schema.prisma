@@ -8,15 +8,16 @@ datasource db {
 }
 
 model Account {
-  id           String        @id @default(uuid())
-  username     String        @unique
-  password     String
-  goals        Goal[]
-  labels       Label[]
-  projects     Project[]
-  transactions Transaction[]
-  wallets      Wallet[]
-  roles        UserRole[]
+  id                   String                @id @default(uuid())
+  username             String                @unique
+  password             String
+  goals                Goal[]
+  labels               Label[]
+  projects             Project[]
+  transactions         Transaction[]
+  projectTransactions  ProjectTransaction[]
+  wallets              Wallet[]
+  roles                UserRole[]
 }
 
 model Role {
