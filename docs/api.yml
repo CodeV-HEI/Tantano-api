@@ -10,6 +10,16 @@ security:
 tags:
   - name: auth
     description: For all authentications requests
+  - name: label
+    description: Label management
+  - name: wallet
+    description: Wallet management
+  - name: transaction
+    description: Transaction management
+  - name: goal
+    description: Goal management
+  - name: project
+    description: Project and budget management
 paths:
   /auth/sign-up:
     post:
@@ -517,6 +527,300 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/Goal"
 
+  /account/{accountId}/project:
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/Name"
+      summary: Get all projects for the specified account
+      operationId: getAllProjects
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+
+    post:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      summary: Create new project for the specified account
+      operationId: createOneProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreationProject"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Project"
+
+  /account/{accountId}/project/{projectId}:
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Get one project by id for the specified account
+      operationId: getOneProject
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Project"
+
+    put:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Update one project by id for the specified account
+      operationId: updateOneProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreationProject"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Project"
+
+    delete:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Delete one project by id for the specified account
+      operationId: deleteOneProject
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Project"
+
+  /account/{accountId}/project/{projectId}/archive:
+    post:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Archive one project by id
+      operationId: archiveOneProject
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Project"
+
+  /account/{accountId}/project/{projectId}/transaction:
+    post:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Create new project transaction for the specified account
+      operationId: createOneProjectTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreationProjectTransaction"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ProjectTransaction"
+
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Get all project transactions for the specified project
+      operationId: getAllProjectTransactions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProjectTransaction"
+
+  /account/{accountId}/project/{projectId}/transaction/{transactionId}:
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+        - $ref: "#/components/parameters/TransactionId"
+      summary: Get one project transaction by id
+      operationId: getOneProjectTransaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ProjectTransaction"
+
+    put:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+        - $ref: "#/components/parameters/TransactionId"
+      summary: Update one project transaction by id
+      operationId: updateOneProjectTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreationProjectTransaction"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ProjectTransaction"
+
+    delete:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+        - $ref: "#/components/parameters/TransactionId"
+      summary: Delete one project transaction by id
+      operationId: deleteOneProjectTransaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ProjectTransaction"
+
+  /account/{accountId}/project/{projectId}/statistics:
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Get statistics for one project
+      operationId: getProjectStatistics
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ProjectStatistics"
+
+  /account/{accountId}/project/{projectId}/pdf/statistics:
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Download project statistics as PDF
+      operationId: downloadProjectStatisticsPDF
+      responses:
+        "200":
+          description: PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /account/{accountId}/project/{projectId}/pdf/invoice:
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Download project invoice as PDF
+      operationId: downloadProjectInvoicePDF
+      responses:
+        "200":
+          description: PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /account/{accountId}/project/{projectId}/pdf/summary:
+    get:
+      tags:
+        - project
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/ProjectId"
+      summary: Download project summary as PDF
+      operationId: downloadProjectSummaryPDF
+      responses:
+        "200":
+          description: PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
 components:
   parameters:
     Id:
@@ -556,6 +860,13 @@ components:
         format: uuid
     GoalId:
       name: goalId
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+    ProjectId:
+      name: projectId
       required: true
       in: path
       schema:
@@ -910,3 +1221,101 @@ components:
           type: boolean
         hasPrev:
           type: boolean
+
+    CreationProject:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Renovation Maison"
+        description:
+          type: string
+          example: "Renovation de la cuisine"
+        initialBudget:
+          type: number
+          format: int64
+          example: 5000000
+        color:
+          type: string
+          example: "#FF5733"
+          default: "#00ff00"
+        iconRef:
+          type: string
+
+    Project:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CreationProject"
+      properties:
+        id:
+          type: string
+          format: uuid
+        accountId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        isArchived:
+          type: boolean
+          default: false
+
+    CreationProjectTransaction:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Achat Matériaux"
+        description:
+          type: string
+          example: "Ciment, sable, briques"
+        estimatedCost:
+          type: number
+          format: int64
+          example: 500000
+        realCost:
+          type: number
+          format: int64
+          example: 520000
+
+    ProjectTransaction:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CreationProjectTransaction"
+      properties:
+        id:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+        accountId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ProjectStatistics:
+      type: object
+      properties:
+        project:
+          allOf:
+            - $ref: "#/components/schemas/Project"
+        totalEstimatedCost:
+          type: number
+          format: int64
+        totalRealCost:
+          type: number
+          format: int64
+        remainingBudget:
+          type: number
+          format: int64
+        transactionCount:
+          type: number

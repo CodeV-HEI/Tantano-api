@@ -12,6 +12,7 @@ export class TransactionMapper {
       date: transaction.date.toISOString(),
       description: transaction.description,
       id: transaction.id,
+      type: transaction.type,
       walletId: transaction.walletId,
       labels: transaction.labels.map(LabelMapper.toRest),
     };

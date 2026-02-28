@@ -18,6 +18,26 @@
     {
       "description": "For all authentications requests",
       "name": "auth"
+    },
+    {
+      "description": "Label management",
+      "name": "label"
+    },
+    {
+      "description": "Wallet management",
+      "name": "wallet"
+    },
+    {
+      "description": "Transaction management",
+      "name": "transaction"
+    },
+    {
+      "description": "Goal management",
+      "name": "goal"
+    },
+    {
+      "description": "Project and budget management",
+      "name": "project"
     }
   ],
   "paths": {
@@ -1432,6 +1452,783 @@
         "summary": "Archive one label by id",
         "tags": ["goal"]
       }
+    },
+    "/account/{accountId}/project": {
+      "get": {
+        "operationId": "getAllProjects",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Get all projects for the specified account",
+        "tags": ["project"]
+      },
+      "post": {
+        "operationId": "createOneProject",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreationProject"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Create new project for the specified account",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}": {
+      "delete": {
+        "operationId": "deleteOneProject",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Delete one project by id for the specified account",
+        "tags": ["project"]
+      },
+      "get": {
+        "operationId": "getOneProject",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Get one project by id for the specified account",
+        "tags": ["project"]
+      },
+      "put": {
+        "operationId": "updateOneProject",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreationProject"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Update one project by id for the specified account",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}/archive": {
+      "post": {
+        "operationId": "archiveOneProject",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Project"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Archive one project by id",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}/transaction": {
+      "get": {
+        "operationId": "getAllProjectTransactions",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectTransaction"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Get all project transactions for the specified project",
+        "tags": ["project"]
+      },
+      "post": {
+        "operationId": "createOneProjectTransaction",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreationProjectTransaction"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ProjectTransaction"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Create new project transaction for the specified account",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}/transaction/{transactionId}": {
+      "delete": {
+        "operationId": "deleteOneProjectTransaction",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ProjectTransaction"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Delete one project transaction by id",
+        "tags": ["project"]
+      },
+      "get": {
+        "operationId": "getOneProjectTransaction",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ProjectTransaction"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Get one project transaction by id",
+        "tags": ["project"]
+      },
+      "put": {
+        "operationId": "updateOneProjectTransaction",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreationProjectTransaction"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ProjectTransaction"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Update one project transaction by id",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}/statistics": {
+      "get": {
+        "operationId": "getProjectStatistics",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ProjectStatistics"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Get statistics for one project",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}/pdf/statistics": {
+      "get": {
+        "operationId": "downloadProjectStatisticsPDF",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": "PDF file"
+          }
+        },
+        "summary": "Download project statistics as PDF",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}/pdf/invoice": {
+      "get": {
+        "operationId": "downloadProjectInvoicePDF",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": "PDF file"
+          }
+        },
+        "summary": "Download project invoice as PDF",
+        "tags": ["project"]
+      }
+    },
+    "/account/{accountId}/project/{projectId}/pdf/summary": {
+      "get": {
+        "operationId": "downloadProjectSummaryPDF",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          {
+            "explode": false,
+            "in": "path",
+            "name": "projectId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": "PDF file"
+          }
+        },
+        "summary": "Download project summary as PDF",
+        "tags": ["project"]
+      }
     }
   },
   "components": {
@@ -1495,6 +2292,17 @@
         "explode": false,
         "in": "path",
         "name": "goalId",
+        "required": true,
+        "schema": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "style": "simple"
+      },
+      "ProjectId": {
+        "explode": false,
+        "in": "path",
+        "name": "projectId",
         "required": true,
         "schema": {
           "format": "uuid",
@@ -2023,6 +2831,152 @@
           },
           "hasPrev": {
             "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "CreationProject": {
+        "properties": {
+          "name": {
+            "example": "Renovation Maison",
+            "type": "string"
+          },
+          "description": {
+            "example": "Renovation de la cuisine",
+            "type": "string"
+          },
+          "initialBudget": {
+            "example": 5000000,
+            "format": "int64",
+            "type": "number"
+          },
+          "color": {
+            "default": "#00ff00",
+            "example": "#FF5733",
+            "type": "string"
+          },
+          "iconRef": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Project": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreationProject"
+          },
+          {
+            "properties": {
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "accountId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "createdAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "updatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "isArchived": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "type": "object",
+            "example": null
+          }
+        ],
+        "type": "object",
+        "example": null
+      },
+      "CreationProjectTransaction": {
+        "properties": {
+          "name": {
+            "example": "Achat Matériaux",
+            "type": "string"
+          },
+          "description": {
+            "example": "Ciment, sable, briques",
+            "type": "string"
+          },
+          "estimatedCost": {
+            "example": 500000,
+            "format": "int64",
+            "type": "number"
+          },
+          "realCost": {
+            "example": 520000,
+            "format": "int64",
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "ProjectTransaction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreationProjectTransaction"
+          },
+          {
+            "properties": {
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "projectId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "accountId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "createdAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "updatedAt": {
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "example": null
+          }
+        ],
+        "type": "object",
+        "example": null
+      },
+      "ProjectStatistics": {
+        "properties": {
+          "project": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Project"
+              }
+            ]
+          },
+          "totalEstimatedCost": {
+            "format": "int64",
+            "type": "number"
+          },
+          "totalRealCost": {
+            "format": "int64",
+            "type": "number"
+          },
+          "remainingBudget": {
+            "format": "int64",
+            "type": "number"
+          },
+          "transactionCount": {
+            "type": "number"
           }
         },
         "type": "object"

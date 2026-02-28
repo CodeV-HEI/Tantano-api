@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,11 +11,12 @@ model Account {
   id           String        @id @default(uuid())
   username     String        @unique
   password     String
-  roles        UserRole[]
-  wallets      Wallet[]
-  labels       Label[]
-  transactions Transaction[]
   goals        Goal[]
+  labels       Label[]
+  projects     Project[]
+  transactions Transaction[]
+  wallets      Wallet[]
+  roles        UserRole[]
 }
 
 model Role {
@@ -34,10 +29,10 @@ model Role {
 }
 
 model UserRole {
-  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId String
-  role      Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId    String
+  role      Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   @@id([accountId, roleId])
   @@map("__user_role__")
@@ -62,10 +57,10 @@ model Wallet {
   color                 String        @default("#00ff00")
   isArchived            Boolean       @default(false)
   iconRef               String?
-  transactions          Transaction[]
   accountId             String
-  account               Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
   goals                 Goal[]
+  transactions          Transaction[]
+  account               Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
 
 model Label {
@@ -76,26 +71,24 @@ model Label {
   color        String        @default("#00ff00")
   iconRef      String?
   isArchived   Boolean       @default(false)
-  transactions Transaction[]
   accountId    String
-  account      Account?      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account      Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  transactions Transaction[] @relation("LabelToTransaction")
 }
 
 model Transaction {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   date        DateTime
-  labels      Label[]
   type        String
   description String?
   amount      Int
-
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-
-  walletId  String
-  wallet    Wallet?  @relation(fields: [walletId], references: [id], onDelete: Cascade)
-  accountId String
-  account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  walletId    String
+  accountId   String
+  account     Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  wallet      Wallet    @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  labels      Label[]   @relation("LabelToTransaction")
 }
 
 model Goal {
@@ -111,6 +104,34 @@ model Goal {
   amount       Int
   accountId    String
   walletId     String?
+  account      Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
   wallet       Wallet?   @relation(fields: [walletId], references: [id], onDelete: Cascade)
-  account      Account?  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+}
+
+model Project {
+  id                  String               @id @default(uuid())
+  name                String
+  description         String?
+  initialBudget       Int
+  createdAt           DateTime?            @default(now())
+  updatedAt           DateTime             @updatedAt
+  isArchived          Boolean              @default(false)
+  color               String               @default("#00ff00")
+  iconRef             String?
+  accountId           String
+  account             Account              @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  projectTransactions ProjectTransaction[]
+}
+
+model ProjectTransaction {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  estimatedCost Int
+  realCost      Int?      @default(0)
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime  @updatedAt
+  projectId     String
+  accountId     String
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
