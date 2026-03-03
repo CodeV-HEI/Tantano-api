@@ -48,6 +48,12 @@ export interface ProjectTransaction {
    * @type {string}
    * @memberof ProjectTransaction
    */
+  walletId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ProjectTransaction
+   */
   id?: string;
   /**
    *
@@ -95,6 +101,7 @@ export function ProjectTransactionFromJSONTyped(json: any, ignoreDiscriminator: 
     description: json["description"] == null ? undefined : json["description"],
     estimatedCost: json["estimatedCost"] == null ? undefined : json["estimatedCost"],
     realCost: json["realCost"] == null ? undefined : json["realCost"],
+    walletId: json["walletId"] == null ? undefined : json["walletId"],
     id: json["id"] == null ? undefined : json["id"],
     projectId: json["projectId"] == null ? undefined : json["projectId"],
     accountId: json["accountId"] == null ? undefined : json["accountId"],
@@ -117,6 +124,7 @@ export function ProjectTransactionToJSONTyped(value?: ProjectTransaction | null,
     description: value["description"],
     estimatedCost: value["estimatedCost"],
     realCost: value["realCost"],
+    walletId: value["walletId"],
     id: value["id"],
     projectId: value["projectId"],
     accountId: value["accountId"],

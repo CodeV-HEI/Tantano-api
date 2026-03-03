@@ -153,3 +153,4 @@ prisma/*.db*
 .vscode
 *.rest
 mock
+.idea

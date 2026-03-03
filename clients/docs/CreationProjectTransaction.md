@@ -8,6 +8,7 @@
 | `description`   | string |
 | `estimatedCost` | number |
 | `realCost`      | number |
+| `walletId`      | string |
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "description": Ciment, sable, briques,
   "estimatedCost": 500000,
   "realCost": 520000,
+  "walletId": null,
 } satisfies CreationProjectTransaction
 
 console.log(example)

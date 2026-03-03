@@ -29,6 +29,7 @@ export class ProjectMapper {
       updatedAt: transaction.updatedAt || undefined,
       projectId: transaction.projectId,
       accountId: transaction.accountId,
+      walletId: transaction.walletId || undefined,
     };
   }
 

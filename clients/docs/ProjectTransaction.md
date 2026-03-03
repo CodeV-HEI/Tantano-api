@@ -8,6 +8,7 @@
 | `description`   | string |
 | `estimatedCost` | number |
 | `realCost`      | number |
+| `walletId`      | string |
 | `id`            | string |
 | `projectId`     | string |
 | `accountId`     | string |
@@ -25,6 +26,7 @@ const example = {
   "description": Ciment, sable, briques,
   "estimatedCost": 500000,
   "realCost": 520000,
+  "walletId": null,
   "id": null,
   "projectId": null,
   "accountId": null,

@@ -60,6 +60,7 @@ model Wallet {
   accountId             String
   goals                 Goal[]
   transactions          Transaction[]
+  projectTransactions   ProjectTransaction[]
   account               Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
 
@@ -133,5 +134,7 @@ model ProjectTransaction {
   updatedAt     DateTime  @updatedAt
   projectId     String
   accountId     String
+  walletId      String?
   project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  wallet        Wallet?   @relation(fields: [walletId], references: [id], onDelete: SetNull)
 }

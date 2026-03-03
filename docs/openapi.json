@@ -2915,6 +2915,11 @@
             "example": 520000,
             "format": "int64",
             "type": "number"
+          },
+          "walletId": {
+            "description": "ID du wallet pour déduire le coût réel",
+            "format": "uuid",
+            "type": "string"
           }
         },
         "type": "object"
@@ -2935,6 +2940,10 @@
                 "type": "string"
               },
               "accountId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "walletId": {
                 "format": "uuid",
                 "type": "string"
               },

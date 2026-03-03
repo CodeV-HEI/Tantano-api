@@ -6,6 +6,8 @@ import { ApiError } from "@/errors";
 import { ProjectFilters } from "@/types";
 import { filterIfNotNull } from "@/utilities";
 
+import { WalletServices } from "./wallet-services";
+
 export class ProjectServices {
   // Project CRUD
   static async create(accountId: string, project: CreationProject): Promise<PrismaProject> {
@@ -77,8 +79,18 @@ export class ProjectServices {
   }
 
   // ProjectTransaction CRUD
-  static async createTransaction(accountId: string, projectId: string, transaction: CreationProjectTransaction): Promise<PrismaProjectTransaction> {
+  static async createTransaction(accountId: string, projectId: string, transaction: CreationProjectTransaction, walletId?: string): Promise<PrismaProjectTransaction> {
     const project = await this.getOneById(accountId, projectId);
+
+    // Si un walletId est fourni et qu'il y a un coût réel, déduire du wallet
+    if (walletId && transaction.realCost && transaction.realCost > 0) {
+      const wallet = await WalletServices.getOneById(accountId, walletId);
+      wallet.amount -= transaction.realCost;
+      await getPrismaClient().wallet.update({
+        data: { amount: wallet.amount },
+        where: { id: walletId, accountId },
+      });
+    }
 
     return await getPrismaClient().projectTransaction.create({
       data: {
@@ -88,6 +100,7 @@ export class ProjectServices {
         realCost: transaction.realCost || 0,
         projectId,
         accountId,
+        walletId: walletId || null,
       },
     });
   }
@@ -100,8 +113,25 @@ export class ProjectServices {
     return transaction;
   }
 
-  static async updateTransaction(accountId: string, projectId: string, transactionId: string, transaction: Partial<CreationProjectTransaction>): Promise<PrismaProjectTransaction> {
+  static async updateTransaction(accountId: string, projectId: string, transactionId: string, transaction: Partial<CreationProjectTransaction>, walletId?: string): Promise<PrismaProjectTransaction> {
     const existingTransaction = await this.getTransactionById(accountId, projectId, transactionId);
+
+    // Si le coût réel a changé et qu'un wallet est associé, ajuster le wallet
+    const newRealCost = transaction.realCost !== undefined ? transaction.realCost : existingTransaction.realCost;
+    const oldRealCost = existingTransaction.realCost || 0;
+    const costDifference = (newRealCost || 0) - oldRealCost;
+
+    // Déterminer quel wallet utiliser
+    const targetWalletId = walletId !== undefined ? walletId : existingTransaction.walletId;
+
+    if (targetWalletId && costDifference !== 0) {
+      const wallet = await WalletServices.getOneById(accountId, targetWalletId);
+      wallet.amount -= costDifference; // Soustraire la différence
+      await getPrismaClient().wallet.update({
+        data: { amount: wallet.amount },
+        where: { id: targetWalletId, accountId },
+      });
+    }
 
     return await getPrismaClient().projectTransaction.update({
       where: { id: transactionId },
@@ -109,13 +139,25 @@ export class ProjectServices {
         name: transaction.name || existingTransaction.name,
         description: transaction.description !== undefined ? transaction.description : existingTransaction.description,
         estimatedCost: transaction.estimatedCost || existingTransaction.estimatedCost,
-        realCost: transaction.realCost !== undefined ? transaction.realCost : existingTransaction.realCost,
+        realCost: newRealCost,
+        walletId: targetWalletId,
       },
     });
   }
 
   static async deleteTransaction(accountId: string, projectId: string, transactionId: string): Promise<PrismaProjectTransaction> {
     const transaction = await this.getTransactionById(accountId, projectId, transactionId);
+    
+    // Si une transaction avec un coût réel est liée à un wallet, rembourser le wallet
+    if (transaction.walletId && transaction.realCost && transaction.realCost > 0) {
+      const wallet = await WalletServices.getOneById(accountId, transaction.walletId);
+      wallet.amount += transaction.realCost; // Rembourser le montant
+      await getPrismaClient().wallet.update({
+        data: { amount: wallet.amount },
+        where: { id: transaction.walletId, accountId },
+      });
+    }
+
     return await getPrismaClient().projectTransaction.delete({
       where: { id: transactionId },
     });

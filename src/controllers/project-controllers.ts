@@ -85,8 +85,9 @@ export class ProjectController {
     try {
       const { projectId } = req.params;
       const accountId = (req as any).account.id;
-      ProjectValidator.createTransaction(req.body);
-      const data = await ProjectServices.createTransaction(accountId, projectId as string, req.body);
+      const { walletId, ...transactionData } = req.body;
+      ProjectValidator.createTransaction(transactionData);
+      const data = await ProjectServices.createTransaction(accountId, projectId as string, transactionData, walletId);
       res.json(ProjectMapper.transactionToRest(data));
     } catch (err) {
       next(err);
@@ -97,8 +98,9 @@ export class ProjectController {
     try {
       const { projectId, transactionId } = req.params;
       const accountId = (req as any).account.id;
-      ProjectValidator.updateTransaction(req.body);
-      const data = await ProjectServices.updateTransaction(accountId, projectId as string, transactionId as string, req.body);
+      const { walletId, ...transactionData } = req.body;
+      ProjectValidator.updateTransaction(transactionData);
+      const data = await ProjectServices.updateTransaction(accountId, projectId as string, transactionId as string, transactionData, walletId);
       res.json(ProjectMapper.transactionToRest(data));
     } catch (err) {
       next(err);

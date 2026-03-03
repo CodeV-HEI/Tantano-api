@@ -43,6 +43,12 @@ export interface CreationProjectTransaction {
    * @memberof CreationProjectTransaction
    */
   realCost?: number;
+  /**
+   * ID du wallet pour déduire le coût réel
+   * @type {string}
+   * @memberof CreationProjectTransaction
+   */
+  walletId?: string;
 }
 
 /**
@@ -65,6 +71,7 @@ export function CreationProjectTransactionFromJSONTyped(json: any, ignoreDiscrim
     description: json["description"] == null ? undefined : json["description"],
     estimatedCost: json["estimatedCost"] == null ? undefined : json["estimatedCost"],
     realCost: json["realCost"] == null ? undefined : json["realCost"],
+    walletId: json["walletId"] == null ? undefined : json["walletId"],
   };
 }
 
@@ -82,5 +89,6 @@ export function CreationProjectTransactionToJSONTyped(value?: CreationProjectTra
     description: value["description"],
     estimatedCost: value["estimatedCost"],
     realCost: value["realCost"],
+    walletId: value["walletId"],
   };
 }
