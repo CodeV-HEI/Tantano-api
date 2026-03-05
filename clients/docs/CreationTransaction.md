@@ -11,6 +11,7 @@
 | `amount`      | number                         |
 | `walletId`    | string                         |
 | `accountId`   | string                         |
+| `goalId`      | string                         |
 
 ## Example
 
@@ -26,6 +27,7 @@ const example = {
   amount: null,
   walletId: null,
   accountId: null,
+  goalId: null,
 } satisfies CreationTransaction;
 
 console.log(example);

@@ -11,6 +11,7 @@
 | `amount`      | number                         |
 | `walletId`    | string                         |
 | `accountId`   | string                         |
+| `goalId`      | string                         |
 | `id`          | string                         |
 
 ## Example
@@ -27,6 +28,7 @@ const example = {
   amount: null,
   walletId: null,
   accountId: null,
+  goalId: null,
   id: null,
 } satisfies Transaction;
 

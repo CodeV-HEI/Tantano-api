@@ -962,6 +962,7 @@ components:
           - OUT
     TransactionLabel:
       name: label
+      description: list of label ids
       required: false
       in: query
       schema:
@@ -1092,6 +1093,9 @@ components:
           type: string
           format: uuid
         accountId:
+          type: string
+          format: uuid
+        goalId:
           type: string
           format: uuid
     Transaction:

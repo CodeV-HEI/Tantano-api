@@ -109,7 +109,7 @@ async function example() {
     endingDate: 2013-10-20T19:20:30+01:00,
     // 'IN' | 'OUT' (optional)
     type: type_example,
-    // Array<string> (optional)
+    // Array<string> | list of label ids (optional)
     label: ...,
     // number (optional)
     minAmount: 1.2,
@@ -135,18 +135,18 @@ example().catch(console.error);
 
 ### Parameters
 
-| Name             | Type             | Description | Notes                                                     |
-| ---------------- | ---------------- | ----------- | --------------------------------------------------------- |
-| **accountId**    | `string`         |             | [Defaults to `undefined`]                                 |
-| **walletId**     | `string`         |             | [Optional] [Defaults to `undefined`]                      |
-| **startingDate** | `Date`           |             | [Optional] [Defaults to `undefined`]                      |
-| **endingDate**   | `Date`           |             | [Optional] [Defaults to `undefined`]                      |
-| **type**         | `IN`, `OUT`      |             | [Optional] [Defaults to `undefined`] [Enum: IN, OUT]      |
-| **label**        | `Array<string>`  |             | [Optional]                                                |
-| **minAmount**    | `number`         |             | [Optional] [Defaults to `undefined`]                      |
-| **maxAmount**    | `number`         |             | [Optional] [Defaults to `undefined`]                      |
-| **sortBy**       | `date`, `amount` |             | [Optional] [Defaults to `undefined`] [Enum: date, amount] |
-| **sort**         | `asc`, `desc`    |             | [Optional] [Defaults to `undefined`] [Enum: asc, desc]    |
+| Name             | Type             | Description       | Notes                                                     |
+| ---------------- | ---------------- | ----------------- | --------------------------------------------------------- |
+| **accountId**    | `string`         |                   | [Defaults to `undefined`]                                 |
+| **walletId**     | `string`         |                   | [Optional] [Defaults to `undefined`]                      |
+| **startingDate** | `Date`           |                   | [Optional] [Defaults to `undefined`]                      |
+| **endingDate**   | `Date`           |                   | [Optional] [Defaults to `undefined`]                      |
+| **type**         | `IN`, `OUT`      |                   | [Optional] [Defaults to `undefined`] [Enum: IN, OUT]      |
+| **label**        | `Array<string>`  | list of label ids | [Optional]                                                |
+| **minAmount**    | `number`         |                   | [Optional] [Defaults to `undefined`]                      |
+| **maxAmount**    | `number`         |                   | [Optional] [Defaults to `undefined`]                      |
+| **sortBy**       | `date`, `amount` |                   | [Optional] [Defaults to `undefined`] [Enum: date, amount] |
+| **sort**         | `asc`, `desc`    |                   | [Optional] [Defaults to `undefined`] [Enum: asc, desc]    |
 
 ### Return type
 

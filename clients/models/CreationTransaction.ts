@@ -63,6 +63,12 @@ export interface CreationTransaction {
    * @memberof CreationTransaction
    */
   accountId?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CreationTransaction
+   */
+  goalId?: string;
 }
 
 /**
@@ -97,6 +103,7 @@ export function CreationTransactionFromJSONTyped(json: any, ignoreDiscriminator:
     amount: json["amount"] == null ? undefined : json["amount"],
     walletId: json["walletId"] == null ? undefined : json["walletId"],
     accountId: json["accountId"] == null ? undefined : json["accountId"],
+    goalId: json["goalId"] == null ? undefined : json["goalId"],
   };
 }
 
@@ -117,5 +124,6 @@ export function CreationTransactionToJSONTyped(value?: CreationTransaction | nul
     amount: value["amount"],
     walletId: value["walletId"],
     accountId: value["accountId"],
+    goalId: value["goalId"],
   };
 }

@@ -759,6 +759,7 @@
             "style": "form"
           },
           {
+            "description": "list of label ids",
             "explode": true,
             "in": "query",
             "name": "label",
@@ -2441,6 +2442,7 @@
         "style": "form"
       },
       "TransactionLabel": {
+        "description": "list of label ids",
         "explode": true,
         "in": "query",
         "name": "label",
@@ -2625,6 +2627,10 @@
             "type": "string"
           },
           "accountId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "goalId": {
             "format": "uuid",
             "type": "string"
           }

@@ -15,6 +15,7 @@ export class TransactionMapper {
       type: transaction.type,
       walletId: transaction.walletId,
       labels: transaction.labels.map(LabelMapper.toRest),
+      goalId: transaction.goalId,
     };
 
     return result;
@@ -30,6 +31,7 @@ export class TransactionMapper {
       type: transaction.type,
       createdAt: new Date(),
       updatedAt: new Date(),
+      goalId: transaction.goalId,
     };
     return mapped as PrismaTransaction;
   }
@@ -42,6 +44,7 @@ export class TransactionMapper {
       date: new Date(transaction.date),
       description: transaction.description,
       type: transaction.type,
+      goalId: transaction.goalId,
     };
     return mapped as PrismaTransaction;
   }
