@@ -2230,6 +2230,223 @@
         "summary": "Download project summary as PDF",
         "tags": ["project"]
       }
+    },
+    "/account/{accountId}/configuration": {
+      "get": {
+        "operationId": "getConfiguration",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Configuration"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Configuration"
+          }
+        },
+        "summary": "Get the current configuration",
+        "tags": ["configuration"]
+      },
+      "put": {
+        "operationId": "updateBasicConfiguration",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/BasicConfiguration"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Configuration"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Configuration"
+          }
+        },
+        "summary": "Update currency and loginWithoutPassword configuration for a specified account",
+        "tags": ["configuration"]
+      }
+    },
+    "/account/{accountId}/configuration/transaction": {
+      "put": {
+        "operationId": "updateTransactionConfiguration",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TransactionConfiguration"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Configuration"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Configuration"
+          }
+        },
+        "summary": "Get the current configuration",
+        "tags": ["configuration"]
+      }
+    },
+    "/account/{accountId}/subscribe": {
+      "post": {
+        "operationId": "addSubscription",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Subscription"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Configuration"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Configuration"
+          }
+        },
+        "summary": "Add subscription to the specified account with key",
+        "tags": ["configuration"]
+      }
+    },
+    "/account/{accountId}/subscription/token": {
+      "post": {
+        "operationId": "generateSubsciptionToken",
+        "parameters": [
+          {
+            "explode": false,
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SubscriptionResult"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Configuration"
+          }
+        },
+        "summary": "Genearte subscription token for a specified account",
+        "tags": ["configuration"]
+      }
     }
   },
   "components": {
@@ -2547,6 +2764,85 @@
       }
     },
     "schemas": {
+      "BasicConfiguration": {
+        "properties": {
+          "currency": {
+            "enum": ["MGA", "USD", "EUR"],
+            "type": "string"
+          },
+          "loginWithoutPassword": {
+            "description": "Activate or desactivate login without password or not",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "Subscription": {
+        "properties": {
+          "token": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "SubscriptionResult": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Subscription"
+          },
+          {
+            "properties": {
+              "endingDate": {
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "example": null
+          }
+        ],
+        "type": "object",
+        "example": null
+      },
+      "TransactionConfiguration": {
+        "properties": {
+          "reccurency": {
+            "description": "Time, day, month or year transaction notification reccurency",
+            "type": "number"
+          },
+          "countDays": {
+            "description": "Time, day, month or year transaction get to make notification",
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "Configuration": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicConfiguration"
+          },
+          {
+            "properties": {
+              "transaction": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TransactionConfiguration"
+                  }
+                ]
+              },
+              "subscription": {
+                "$ref": "#/components/schemas/Configuration_allOf_subscription"
+              }
+            },
+            "type": "object",
+            "example": null
+          }
+        ],
+        "type": "object",
+        "example": null
+      },
       "CreationGoal": {
         "properties": {
           "accountId": {
@@ -3067,6 +3363,18 @@
               "$ref": "#/components/schemas/Goal"
             },
             "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Configuration_allOf_subscription": {
+        "properties": {
+          "isActive": {
+            "type": "boolean"
+          },
+          "endingDate": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "type": "object"

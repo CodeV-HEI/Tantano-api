@@ -1,5 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from "./BasicConfiguration";
+export * from "./ConfigurationAllOfSubscription";
 export * from "./CreationGoal";
 export * from "./CreationLabel";
 export * from "./CreationProject";
@@ -11,6 +13,7 @@ export * from "./GetAllLabels200Response";
 export * from "./GetAllWallets200Response";
 export * from "./Goal";
 export * from "./Label";
+export * from "./ModelConfiguration";
 export * from "./PaginationResult";
 export * from "./Project";
 export * from "./ProjectStatistics";
@@ -19,7 +22,10 @@ export * from "./SignInCredentials";
 export * from "./SignInResult";
 export * from "./SignUpCredentials";
 export * from "./SignUpResult";
+export * from "./Subscription";
+export * from "./SubscriptionResult";
 export * from "./Transaction";
+export * from "./TransactionConfiguration";
 export * from "./UpdateWallet";
 export * from "./Wallet";
 export * from "./WalletAutomaticIncome";
