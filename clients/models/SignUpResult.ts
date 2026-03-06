@@ -31,6 +31,12 @@ export interface SignUpResult {
    * @memberof SignUpResult
    */
   username?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SignUpResult
+   */
+  email?: string;
 }
 
 /**
@@ -51,6 +57,7 @@ export function SignUpResultFromJSONTyped(json: any, ignoreDiscriminator: boolea
   return {
     id: json["id"] == null ? undefined : json["id"],
     username: json["username"] == null ? undefined : json["username"],
+    email: json["email"] == null ? undefined : json["email"],
   };
 }
 
@@ -66,5 +73,6 @@ export function SignUpResultToJSONTyped(value?: SignUpResult | null, ignoreDiscr
   return {
     id: value["id"],
     username: value["username"],
+    email: value["email"],
   };
 }

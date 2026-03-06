@@ -50,6 +50,9 @@ export class GoalServices {
     const values = await getPrismaClient().goal.findMany({
       take: pageSize,
       skip: pageSize * (page - 1),
+      include: {
+        wallet: true,
+      },
       where,
       orderBy: {
         [sortBy]: sort,

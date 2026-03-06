@@ -11,16 +11,25 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { Credentials, SignInResult, SignUpResult } from "../models/index";
-import { CredentialsFromJSON, CredentialsToJSON, SignInResultFromJSON, SignInResultToJSON, SignUpResultFromJSON, SignUpResultToJSON } from "../models/index";
+import type { SignInCredentials, SignInResult, SignUpCredentials, SignUpResult } from "../models/index";
+import {
+  SignInCredentialsFromJSON,
+  SignInCredentialsToJSON,
+  SignInResultFromJSON,
+  SignInResultToJSON,
+  SignUpCredentialsFromJSON,
+  SignUpCredentialsToJSON,
+  SignUpResultFromJSON,
+  SignUpResultToJSON,
+} from "../models/index";
 import * as runtime from "../runtime";
 
 export interface SignInRequest {
-  credentials?: Credentials;
+  signInCredentials?: SignInCredentials;
 }
 
 export interface SignUpRequest {
-  credentials?: Credentials;
+  signUpCredentials?: SignUpCredentials;
 }
 
 /**
@@ -45,7 +54,7 @@ export class AuthApi extends runtime.BaseAPI {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: CredentialsToJSON(requestParameters["credentials"]),
+        body: SignInCredentialsToJSON(requestParameters["signInCredentials"]),
       },
       initOverrides,
     );
@@ -79,7 +88,7 @@ export class AuthApi extends runtime.BaseAPI {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: CredentialsToJSON(requestParameters["credentials"]),
+        body: SignUpCredentialsToJSON(requestParameters["signUpCredentials"]),
       },
       initOverrides,
     );

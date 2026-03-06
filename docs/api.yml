@@ -33,7 +33,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Credentials"
+                - $ref: "#/components/schemas/SignUpCredentials"
       responses:
         "200":
           description: OK
@@ -54,7 +54,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/Credentials"
+                - $ref: "#/components/schemas/SignInCredentials"
       responses:
         "200":
           description: OK
@@ -1188,13 +1188,19 @@ components:
         id:
           type: string
           format: uuid
-
-    Credentials:
+    SignInCredentials:
       type: object
       properties:
-        username:
+        email:
           type: string
         password:
+          type: string
+    SignUpCredentials:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/SignInCredentials"
+      properties:
+        username:
           type: string
     SignUpResult:
       type: object
@@ -1203,6 +1209,8 @@ components:
           type: string
           format: uuid
         username:
+          type: string
+        email:
           type: string
     SignInResult:
       type: object

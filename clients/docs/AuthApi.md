@@ -9,7 +9,7 @@ All URIs are relative to _http://localhost:8080_
 
 ## signIn
 
-> SignInResult signIn(credentials)
+> SignInResult signIn(signInCredentials)
 
 Login with and existing account
 
@@ -27,8 +27,8 @@ async function example() {
   const api = new AuthApi();
 
   const body = {
-    // Credentials (optional)
-    credentials: ...,
+    // SignInCredentials (optional)
+    signInCredentials: ...,
   } satisfies SignInRequest;
 
   try {
@@ -45,9 +45,9 @@ example().catch(console.error);
 
 ### Parameters
 
-| Name            | Type                          | Description | Notes      |
-| --------------- | ----------------------------- | ----------- | ---------- |
-| **credentials** | [Credentials](Credentials.md) |             | [Optional] |
+| Name                  | Type                                      | Description | Notes      |
+| --------------------- | ----------------------------------------- | ----------- | ---------- |
+| **signInCredentials** | [SignInCredentials](SignInCredentials.md) |             | [Optional] |
 
 ### Return type
 
@@ -72,7 +72,7 @@ No authorization required
 
 ## signUp
 
-> SignUpResult signUp(credentials)
+> SignUpResult signUp(signUpCredentials)
 
 Create new account with basic user role
 
@@ -90,8 +90,8 @@ async function example() {
   const api = new AuthApi();
 
   const body = {
-    // Credentials (optional)
-    credentials: ...,
+    // SignUpCredentials (optional)
+    signUpCredentials: ...,
   } satisfies SignUpRequest;
 
   try {
@@ -108,9 +108,9 @@ example().catch(console.error);
 
 ### Parameters
 
-| Name            | Type                          | Description | Notes      |
-| --------------- | ----------------------------- | ----------- | ---------- |
-| **credentials** | [Credentials](Credentials.md) |             | [Optional] |
+| Name                  | Type                                      | Description | Notes      |
+| --------------------- | ----------------------------------------- | ----------- | ---------- |
+| **signUpCredentials** | [SignUpCredentials](SignUpCredentials.md) |             | [Optional] |
 
 ### Return type
 

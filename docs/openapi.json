@@ -50,7 +50,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Credentials"
+                    "$ref": "#/components/schemas/SignUpCredentials"
                   }
                 ]
               }
@@ -87,7 +87,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Credentials"
+                    "$ref": "#/components/schemas/SignInCredentials"
                   }
                 ]
               }
@@ -2784,9 +2784,9 @@
         "type": "object",
         "example": null
       },
-      "Credentials": {
+      "SignInCredentials": {
         "properties": {
-          "username": {
+          "email": {
             "type": "string"
           },
           "password": {
@@ -2795,6 +2795,24 @@
         },
         "type": "object"
       },
+      "SignUpCredentials": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SignInCredentials"
+          },
+          {
+            "properties": {
+              "username": {
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "example": null
+          }
+        ],
+        "type": "object",
+        "example": null
+      },
       "SignUpResult": {
         "properties": {
           "id": {
@@ -2802,6 +2820,9 @@
             "type": "string"
           },
           "username": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           }
         },

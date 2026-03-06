@@ -1,22 +1,22 @@
-# Credentials
+# SignInCredentials
 
 ## Properties
 
 | Name       | Type   |
 | ---------- | ------ |
-| `username` | string |
+| `email`    | string |
 | `password` | string |
 
 ## Example
 
 ```typescript
-import type { Credentials } from "";
+import type { SignInCredentials } from "";
 
 // TODO: Update the object below with actual values
 const example = {
-  username: null,
+  email: null,
   password: null,
-} satisfies Credentials;
+} satisfies SignInCredentials;
 
 console.log(example);
 
@@ -25,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example);
 console.log(exampleJSON);
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as Credentials;
+const exampleParsed = JSON.parse(exampleJSON) as SignInCredentials;
 console.log(exampleParsed);
 ```
 
