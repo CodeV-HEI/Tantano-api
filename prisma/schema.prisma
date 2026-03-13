@@ -10,8 +10,8 @@ datasource db {
 model Account {
   id           String        @id @default(uuid())
   username     String        @unique
-  email        String        @default("")
   password     String
+  email        String        @default("")
   goals        Goal[]
   labels       Label[]
   projects     Project[]
@@ -32,8 +32,8 @@ model Role {
 model UserRole {
   accountId String
   roleId    String
-  role      Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  role      Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@id([accountId, roleId])
   @@map("__user_role__")
@@ -60,8 +60,8 @@ model Wallet {
   iconRef               String?
   accountId             String
   goals                 Goal[]
-  transactions          Transaction[]
   projectTransactions   ProjectTransaction[]
+  transactions          Transaction[]
   account               Account              @relation(fields: [accountId], references: [id], onDelete: Cascade)
 }
 
@@ -90,8 +90,8 @@ model Transaction {
   accountId   String
   goalId      String?
   account     Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  wallet      Wallet    @relation(fields: [walletId], references: [id], onDelete: Cascade)
   goal        Goal?     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  wallet      Wallet    @relation(fields: [walletId], references: [id], onDelete: Cascade)
   labels      Label[]   @relation("LabelToTransaction")
 }
 
@@ -100,7 +100,6 @@ model Goal {
   name         String
   createdAt    DateTime?     @default(now())
   updatedAt    DateTime      @updatedAt
-  startingDate DateTime
   endingDate   DateTime
   color        String        @default("#00ff00")
   iconRef      String?
@@ -108,6 +107,7 @@ model Goal {
   amount       Int
   accountId    String
   walletId     String?
+  startingDate DateTime
   account      Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
   wallet       Wallet?       @relation(fields: [walletId], references: [id], onDelete: Cascade)
   transactions Transaction[]
@@ -140,7 +140,7 @@ model ProjectTransaction {
   accountId     String
   walletId      String?
   project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  wallet        Wallet?   @relation(fields: [walletId], references: [id], onDelete: SetNull)
+  wallet        Wallet?   @relation(fields: [walletId], references: [id])
 }
 
 model Subscription {
