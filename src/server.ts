@@ -1,9 +1,5 @@
-import cors from "cors";
-import express,
-{
-  Request,
-  Response
-} from "express";
+import * as cors from "cors";
+import * as express from "express";
 
 import { errorHandler, securityHandler } from "@/middlewares";
 import {
@@ -20,6 +16,8 @@ import {
 } from "@/routes";
 
 import { walletRouter } from "./routes/wallet-routes";
+
+import { Request, Response } from "express";
 
 export const server = async () => {
   try {
