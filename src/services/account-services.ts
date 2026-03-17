@@ -19,7 +19,7 @@ export class AccountServices {
     }
 
     const salt = await (bcrypt.genSalt as (rounds: number) => Promise<string>)(10);
-    const hashedPassword = await bcrypt.hash(account.password, salt);
+    const hashedPassword = await (bcrypt.hash as (data: string, salt: string) => Promise<string>)(account.password, salt);
     const parsedAccount: Account = { ...account, id: userId, password: hashedPassword };
 
     const createdAccount = await getPrismaClient().account.create({
@@ -160,7 +160,7 @@ export class AccountServices {
     }
 
     const salt = await (bcrypt.genSalt as (rounds: number) => Promise<string>)(10);
-    const hashedPassword = await (bcrypt.hash as (password: string, salt: string) => Promise<string>)(newPassword, salt);
+    const hashedPassword = await (bcrypt.hash as (data: string, salt: string) => Promise<string>)(newPassword, salt);
 
     await getPrismaClient().account.update({
       where: { id: resetToken.accountId },
