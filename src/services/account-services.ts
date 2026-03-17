@@ -50,6 +50,7 @@ export class AccountServices {
       process.env.GOOGLE_CLIENT_ID_EXPO,
       process.env.GOOGLE_CLIENT_ID_ANDROID,
       process.env.GOOGLE_WEB_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_ID_IOS,
     ].filter(Boolean) as string[];
 
     if (clientIds.length === 0) {
