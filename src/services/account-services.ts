@@ -18,8 +18,8 @@ export class AccountServices {
       throw new ApiError((isEmailExisting ? "Email" : "Username") + "=" + (isEmailExisting ? account.email : account.username) + " is already used", 400);
     }
 
-    const salt = await (bcrypt.genSalt as (rounds: number) => Promise<string>)(10);
-    const hashedPassword = await (bcrypt.hash as (data: string, salt: string) => Promise<string>)(account.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(account.password, salt);
     const parsedAccount: Account = { ...account, id: userId, password: hashedPassword };
 
     const createdAccount = await getPrismaClient().account.create({
@@ -34,7 +34,7 @@ export class AccountServices {
 
     if (!account) throw new ApiError(`Account with email=${email} not found`, 404);
 
-    const validPassword = await (bcrypt.compare as (password: string, hash: string) => Promise<boolean>)(password, account.password);
+    const validPassword = await bcrypt.compare(password, account.password);
     if (!validPassword) throw new ApiError(`Bad password`, 400);
     const token = jwt.sign({ id: account.id, username: account.username, email: account.email }, process.env.JWT_SECRET, { expiresIn: "10h" });
     account.password = undefined;
@@ -159,8 +159,8 @@ export class AccountServices {
       throw new BadRequestError("Token expiré");
     }
 
-    const salt = await (bcrypt.genSalt as (rounds: number) => Promise<string>)(10);
-    const hashedPassword = await (bcrypt.hash as (data: string, salt: string) => Promise<string>)(newPassword, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     await getPrismaClient().account.update({
       where: { id: resetToken.accountId },
