@@ -41,7 +41,7 @@ export class AccountController {
     try {
       const { email } = req.body;
       const token = await AccountServices.forgotPassword(email);
-      res.json({ token }); // Retourne le token directement (pour une utilisation immédiate)
+      res.json({ token });
     } catch (err) {
       next(err);
     }

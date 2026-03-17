@@ -53,7 +53,7 @@ export class AccountServices {
       process.env.GOOGLE_CLIENT_ID_IOS,
     ].filter(Boolean) as string[];
 
-    console.log('🔍 Client IDs disponibles:', clientIds);
+    //console.log('🔍 Client IDs disponibles:', clientIds);
 
     if (clientIds.length === 0) {
       throw new ApiError("Aucun client ID Google configuré", 500);
@@ -64,26 +64,26 @@ export class AccountServices {
 
     for (const clientId of clientIds) {
       try {
-        console.log(`🔍 Tentative avec client ID: ${clientId}`);
+        //console.log(`🔍 Tentative avec client ID: ${clientId}`);
         const ticket = await googleClient.verifyIdToken({
           idToken,
           audience: clientId,
         });
         payload = ticket.getPayload();
-        console.log(`✅ Succès avec le client ID: ${clientId}`);
+        //console.log(`✅ Succès avec le client ID: ${clientId}`);
         if (payload) break;
       } catch (err: any) {
-        console.error(`❌ Échec pour ${clientId}:`, err.message);
+        //console.error(`❌ Échec pour ${clientId}:`, err.message);
         lastError = err as Error;
       }
     }
 
     if (!payload || !payload.email) {
-      console.error("❌ Erreur de vérification Google - Dernière erreur:", lastError);
+      //console.error("❌ Erreur de vérification Google - Dernière erreur:", lastError);
       throw new ApiError("Token Google invalide ou expiré", 400);
     }
 
-    console.log("✅ Payload reçu, email:", payload.email);
+    //console.log("✅ Payload reçu, email:", payload.email);
 
     const { email, sub: googleId, name } = payload;
 
@@ -91,11 +91,11 @@ export class AccountServices {
       where: { email },
     });
 
-    console.log("🔍 Compte trouvé par email:", account ? account.id : "aucun");
+    //console.log("🔍 Compte trouvé par email:", account ? account.id : "aucun");
 
     if (account) {
       if (!account.googleId) {
-        console.log("🔄 Mise à jour du googleId pour le compte", account.id);
+        //console.log("🔄 Mise à jour du googleId pour le compte", account.id);
         account = await getPrismaClient().account.update({
           where: { id: account.id },
           data: { googleId },
@@ -104,7 +104,7 @@ export class AccountServices {
         console.log("ℹ️ googleId déjà présent");
       }
     } else {
-      console.log("🆕 Création d'un nouveau compte");
+      //console.log("🆕 Création d'un nouveau compte");
       const username = name || email.split("@")[0];
       const uniqueUsername = await this.generateUniqueUsername(username);
       account = await getPrismaClient().account.create({
@@ -118,7 +118,7 @@ export class AccountServices {
       });
     }
 
-    console.log("✅ Compte après opération:", account.id);
+    //console.log("✅ Compte après opération:", account.id);
 
     const token = jwt.sign(
       { id: account.id, username: account.username, email: account.email },
@@ -126,7 +126,7 @@ export class AccountServices {
       { expiresIn: "10h" }
     );
 
-    console.log("🔑 Token JWT généré");
+    //console.log("🔑 Token JWT généré");
 
     const { password, ...accountWithoutPassword } = account;
     return { token, account: accountWithoutPassword };
