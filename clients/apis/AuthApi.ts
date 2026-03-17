@@ -11,8 +11,28 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { SignInCredentials, SignInResult, SignUpCredentials, SignUpResult } from "../models/index";
+import type {
+  ForgotPassword200Response,
+  ForgotPasswordRequest,
+  GoogleSignInRequest,
+  ResetPassword200Response,
+  ResetPasswordRequest,
+  SignInCredentials,
+  SignInResult,
+  SignUpCredentials,
+  SignUpResult,
+} from "../models/index";
 import {
+  ForgotPassword200ResponseFromJSON,
+  ForgotPassword200ResponseToJSON,
+  ForgotPasswordRequestFromJSON,
+  ForgotPasswordRequestToJSON,
+  GoogleSignInRequestFromJSON,
+  GoogleSignInRequestToJSON,
+  ResetPassword200ResponseFromJSON,
+  ResetPassword200ResponseToJSON,
+  ResetPasswordRequestFromJSON,
+  ResetPasswordRequestToJSON,
   SignInCredentialsFromJSON,
   SignInCredentialsToJSON,
   SignInResultFromJSON,
@@ -23,6 +43,18 @@ import {
   SignUpResultToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
+
+export interface ForgotPasswordOperationRequest {
+  forgotPasswordRequest?: ForgotPasswordRequest;
+}
+
+export interface GoogleSignInOperationRequest {
+  googleSignInRequest?: GoogleSignInRequest;
+}
+
+export interface ResetPasswordOperationRequest {
+  resetPasswordRequest?: ResetPasswordRequest;
+}
 
 export interface SignInRequest {
   signInCredentials?: SignInCredentials;
@@ -36,6 +68,114 @@ export interface SignUpRequest {
  *
  */
 export class AuthApi extends runtime.BaseAPI {
+  /**
+   * Request a password reset token (returned directly, no email sent)
+   */
+  async forgotPasswordRaw(
+    requestParameters: ForgotPasswordOperationRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<ForgotPassword200Response>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    let urlPath = `/auth/forgot-password`;
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: ForgotPasswordRequestToJSON(requestParameters["forgotPasswordRequest"]),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => ForgotPassword200ResponseFromJSON(jsonValue));
+  }
+
+  /**
+   * Request a password reset token (returned directly, no email sent)
+   */
+  async forgotPassword(requestParameters: ForgotPasswordOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ForgotPassword200Response> {
+    const response = await this.forgotPasswordRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Sign in or sign up with Google ID token
+   */
+  async googleSignInRaw(requestParameters: GoogleSignInOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SignInResult>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    let urlPath = `/auth/google`;
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: GoogleSignInRequestToJSON(requestParameters["googleSignInRequest"]),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => SignInResultFromJSON(jsonValue));
+  }
+
+  /**
+   * Sign in or sign up with Google ID token
+   */
+  async googleSignIn(requestParameters: GoogleSignInOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SignInResult> {
+    const response = await this.googleSignInRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Reset password using a valid token
+   */
+  async resetPasswordRaw(
+    requestParameters: ResetPasswordOperationRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<ResetPassword200Response>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    let urlPath = `/auth/reset-password`;
+
+    const response = await this.request(
+      {
+        path: urlPath,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: ResetPasswordRequestToJSON(requestParameters["resetPasswordRequest"]),
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => ResetPassword200ResponseFromJSON(jsonValue));
+  }
+
+  /**
+   * Reset password using a valid token
+   */
+  async resetPassword(requestParameters: ResetPasswordOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ResetPassword200Response> {
+    const response = await this.resetPasswordRaw(requestParameters, initOverrides);
+    return await response.value();
+  }
+
   /**
    * Login with and existing account
    */

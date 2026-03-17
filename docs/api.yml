@@ -63,6 +63,93 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/SignInResult"
+  /auth/google:
+    post:
+      tags:
+        - auth
+      security: []
+      summary: Sign in or sign up with Google ID token
+      operationId: googleSignIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idToken:
+                  type: string
+              required:
+                - idToken
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignInResult"
+  /auth/forgot-password:
+    post:
+      tags:
+        - auth
+      security: []
+      summary: Request a password reset token (returned directly, no email sent)
+      operationId: forgotPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+                - email
+      responses:
+        "200":
+          description: Token generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  expiresAt:
+                    type: string
+                    format: date-time
+  /auth/reset-password:
+    post:
+      tags:
+        - auth
+      security: []
+      summary: Reset password using a valid token
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                token:
+                  type: string
+                newPassword:
+                  type: string
+              required:
+                - email
+                - token
+                - newPassword
+      responses:
+        "200":
+          description: Password updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   /account/{accountId}/label:
     get:
       tags:

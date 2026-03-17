@@ -75,9 +75,7 @@
         },
         "security": [],
         "summary": "Create new account with basic user role",
-        "tags": [
-          "auth"
-        ]
+        "tags": ["auth"]
       }
     },
     "/auth/sign-in": {
@@ -114,9 +112,94 @@
         },
         "security": [],
         "summary": "Login with and existing account",
-        "tags": [
-          "auth"
-        ]
+        "tags": ["auth"]
+      }
+    },
+    "/auth/google": {
+      "post": {
+        "operationId": "googleSignIn",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/googleSignIn_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignInResult"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [],
+        "summary": "Sign in or sign up with Google ID token",
+        "tags": ["auth"]
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "operationId": "forgotPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/forgotPassword_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forgotPassword_200_response"
+                }
+              }
+            },
+            "description": "Token generated"
+          }
+        },
+        "security": [],
+        "summary": "Request a password reset token (returned directly, no email sent)",
+        "tags": ["auth"]
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "operationId": "resetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/resetPassword_request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/resetPassword_200_response"
+                }
+              }
+            },
+            "description": "Password updated successfully"
+          }
+        },
+        "security": [],
+        "summary": "Reset password using a valid token",
+        "tags": ["auth"]
       }
     },
     "/account/{accountId}/label": {
@@ -180,9 +263,7 @@
           }
         },
         "summary": "Get all disponibles lables for the specified account",
-        "tags": [
-          "label"
-        ]
+        "tags": ["label"]
       },
       "post": {
         "operationId": "createOneLabel",
@@ -229,9 +310,7 @@
           }
         },
         "summary": "Create new label for the specified account",
-        "tags": [
-          "label"
-        ]
+        "tags": ["label"]
       }
     },
     "/account/{accountId}/label/{labelId}": {
@@ -278,9 +357,7 @@
           }
         },
         "summary": "Get get one label by id for the specified account",
-        "tags": [
-          "label"
-        ]
+        "tags": ["label"]
       },
       "put": {
         "operationId": "updateOneLabel",
@@ -338,9 +415,7 @@
           }
         },
         "summary": "Update one label by id for the specified account",
-        "tags": [
-          "label"
-        ]
+        "tags": ["label"]
       }
     },
     "/account/{accountId}/label/{labelId}/archive": {
@@ -387,9 +462,7 @@
           }
         },
         "summary": "Archive one label by id",
-        "tags": [
-          "label"
-        ]
+        "tags": ["label"]
       }
     },
     "/account/{accountId}/wallet": {
@@ -433,12 +506,7 @@
             "name": "walletType",
             "required": false,
             "schema": {
-              "enum": [
-                "CASH",
-                "MOBILE_MONEY",
-                "BANK",
-                "DEBT"
-              ],
+              "enum": ["CASH", "MOBILE_MONEY", "BANK", "DEBT"],
               "type": "string"
             },
             "style": "form"
@@ -457,9 +525,7 @@
           }
         },
         "summary": "Get all disponibles wallet for the specified account",
-        "tags": [
-          "wallet"
-        ]
+        "tags": ["wallet"]
       },
       "post": {
         "operationId": "createOneWallet",
@@ -506,9 +572,7 @@
           }
         },
         "summary": "Create new wallet for the specified account",
-        "tags": [
-          "wallet"
-        ]
+        "tags": ["wallet"]
       }
     },
     "/account/{accountId}/wallet/{walletId}": {
@@ -555,9 +619,7 @@
           }
         },
         "summary": "Get get one wallet by id for the specified account",
-        "tags": [
-          "wallet"
-        ]
+        "tags": ["wallet"]
       },
       "put": {
         "operationId": "updateOneWallet",
@@ -615,9 +677,7 @@
           }
         },
         "summary": "Update one wallet by id for the specified account",
-        "tags": [
-          "wallet"
-        ]
+        "tags": ["wallet"]
       }
     },
     "/account/{accountId}/wallet/{walletId}/archive": {
@@ -663,9 +723,7 @@
           }
         },
         "summary": "Archive one wallet by id",
-        "tags": [
-          "wallet"
-        ]
+        "tags": ["wallet"]
       }
     },
     "/account/{accountId}/wallet/{walletId}/automaticIncome": {
@@ -725,9 +783,7 @@
           }
         },
         "summary": "Update one wallet automatic income by walletId and accountId",
-        "tags": [
-          "wallet"
-        ]
+        "tags": ["wallet"]
       }
     },
     "/account/{accountId}/transaction": {
@@ -784,10 +840,7 @@
             "name": "type",
             "required": false,
             "schema": {
-              "enum": [
-                "IN",
-                "OUT"
-              ],
+              "enum": ["IN", "OUT"],
               "type": "string"
             },
             "style": "form"
@@ -836,10 +889,7 @@
             "name": "sortBy",
             "required": false,
             "schema": {
-              "enum": [
-                "date",
-                "amount"
-              ],
+              "enum": ["date", "amount"],
               "type": "string"
             },
             "style": "form"
@@ -850,10 +900,7 @@
             "name": "sort",
             "required": false,
             "schema": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
+              "enum": ["asc", "desc"],
               "type": "string"
             },
             "style": "form"
@@ -875,9 +922,7 @@
           }
         },
         "summary": "Get all disponibles transaction for the specified account",
-        "tags": [
-          "transaction"
-        ]
+        "tags": ["transaction"]
       }
     },
     "/account/{accountId}/wallet/{walletId}/transaction": {
@@ -937,9 +982,7 @@
           }
         },
         "summary": "Create new transaction for the specified account",
-        "tags": [
-          "transaction"
-        ]
+        "tags": ["transaction"]
       }
     },
     "/account/{accountId}/wallet/{walletId}/transaction/{transactionId}": {
@@ -997,9 +1040,7 @@
           }
         },
         "summary": "Delete one transaction and update wallet amount",
-        "tags": [
-          "transaction"
-        ]
+        "tags": ["transaction"]
       },
       "get": {
         "operationId": "getOneTransaction",
@@ -1055,9 +1096,7 @@
           }
         },
         "summary": "Get get one transaction by id for the specified account",
-        "tags": [
-          "transaction"
-        ]
+        "tags": ["transaction"]
       },
       "put": {
         "operationId": "updateOneTransaction",
@@ -1126,9 +1165,7 @@
           }
         },
         "summary": "Update one transaction by id for the specified account",
-        "tags": [
-          "transaction"
-        ]
+        "tags": ["transaction"]
       }
     },
     "/account/{accountId}/goal": {
@@ -1239,10 +1276,7 @@
             "name": "sort",
             "required": false,
             "schema": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
+              "enum": ["asc", "desc"],
               "type": "string"
             },
             "style": "form"
@@ -1261,9 +1295,7 @@
           }
         },
         "summary": "Get all disponibles goal of one account",
-        "tags": [
-          "goal"
-        ]
+        "tags": ["goal"]
       }
     },
     "/account/{accountId}/wallet/{walletId}/goal": {
@@ -1319,9 +1351,7 @@
           }
         },
         "summary": "create new goal for one account",
-        "tags": [
-          "goal"
-        ]
+        "tags": ["goal"]
       }
     },
     "/account/{accountId}/wallet/{walletId}/goal/{goalId}": {
@@ -1380,9 +1410,7 @@
           }
         },
         "summary": "Get one goal of one account by it's id",
-        "tags": [
-          "goal"
-        ]
+        "tags": ["goal"]
       },
       "put": {
         "operationId": "updateOneGoal",
@@ -1452,9 +1480,7 @@
           }
         },
         "summary": "update one goal of one account",
-        "tags": [
-          "goal"
-        ]
+        "tags": ["goal"]
       }
     },
     "/account/{accountId}/wallet/{walletId}/goal/{goalId}/archive": {
@@ -1512,9 +1538,7 @@
           }
         },
         "summary": "Archive one label by id",
-        "tags": [
-          "goal"
-        ]
+        "tags": ["goal"]
       }
     },
     "/account/{accountId}/project": {
@@ -1581,9 +1605,7 @@
           }
         },
         "summary": "Get all projects for the specified account",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       },
       "post": {
         "operationId": "createOneProject",
@@ -1630,9 +1652,7 @@
           }
         },
         "summary": "Create new project for the specified account",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}": {
@@ -1679,9 +1699,7 @@
           }
         },
         "summary": "Delete one project by id for the specified account",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       },
       "get": {
         "operationId": "getOneProject",
@@ -1726,9 +1744,7 @@
           }
         },
         "summary": "Get one project by id for the specified account",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       },
       "put": {
         "operationId": "updateOneProject",
@@ -1786,9 +1802,7 @@
           }
         },
         "summary": "Update one project by id for the specified account",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}/archive": {
@@ -1835,9 +1849,7 @@
           }
         },
         "summary": "Archive one project by id",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}/transaction": {
@@ -1883,9 +1895,7 @@
           }
         },
         "summary": "Get all project transactions for the specified project",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       },
       "post": {
         "operationId": "createOneProjectTransaction",
@@ -1943,9 +1953,7 @@
           }
         },
         "summary": "Create new project transaction for the specified account",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}/transaction/{transactionId}": {
@@ -2003,9 +2011,7 @@
           }
         },
         "summary": "Delete one project transaction by id",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       },
       "get": {
         "operationId": "getOneProjectTransaction",
@@ -2061,9 +2067,7 @@
           }
         },
         "summary": "Get one project transaction by id",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       },
       "put": {
         "operationId": "updateOneProjectTransaction",
@@ -2132,9 +2136,7 @@
           }
         },
         "summary": "Update one project transaction by id",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}/statistics": {
@@ -2181,9 +2183,7 @@
           }
         },
         "summary": "Get statistics for one project",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}/pdf/statistics": {
@@ -2227,9 +2227,7 @@
           }
         },
         "summary": "Download project statistics as PDF",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}/pdf/invoice": {
@@ -2273,9 +2271,7 @@
           }
         },
         "summary": "Download project invoice as PDF",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/project/{projectId}/pdf/summary": {
@@ -2319,9 +2315,7 @@
           }
         },
         "summary": "Download project summary as PDF",
-        "tags": [
-          "project"
-        ]
+        "tags": ["project"]
       }
     },
     "/account/{accountId}/configuration": {
@@ -2357,9 +2351,7 @@
           }
         },
         "summary": "Get the current configuration",
-        "tags": [
-          "configuration"
-        ]
+        "tags": ["configuration"]
       },
       "put": {
         "operationId": "updateBasicConfiguration",
@@ -2406,9 +2398,7 @@
           }
         },
         "summary": "Update currency and loginWithoutPassword configuration for a specified account",
-        "tags": [
-          "configuration"
-        ]
+        "tags": ["configuration"]
       }
     },
     "/account/{accountId}/configuration/transaction": {
@@ -2457,9 +2447,7 @@
           }
         },
         "summary": "Get the current configuration",
-        "tags": [
-          "configuration"
-        ]
+        "tags": ["configuration"]
       }
     },
     "/account/{accountId}/subscribe": {
@@ -2508,9 +2496,7 @@
           }
         },
         "summary": "Add subscription to the specified account with key",
-        "tags": [
-          "configuration"
-        ]
+        "tags": ["configuration"]
       }
     },
     "/account/{accountId}/subscription/token": {
@@ -2546,9 +2532,7 @@
           }
         },
         "summary": "Genearte subscription token for a specified account",
-        "tags": [
-          "configuration"
-        ]
+        "tags": ["configuration"]
       }
     }
   },
@@ -2679,12 +2663,7 @@
         "name": "walletType",
         "required": false,
         "schema": {
-          "enum": [
-            "CASH",
-            "MOBILE_MONEY",
-            "BANK",
-            "DEBT"
-          ],
+          "enum": ["CASH", "MOBILE_MONEY", "BANK", "DEBT"],
           "type": "string"
         },
         "style": "form"
@@ -2761,10 +2740,7 @@
         "name": "type",
         "required": false,
         "schema": {
-          "enum": [
-            "IN",
-            "OUT"
-          ],
+          "enum": ["IN", "OUT"],
           "type": "string"
         },
         "style": "form"
@@ -2824,10 +2800,7 @@
         "name": "sortBy",
         "required": false,
         "schema": {
-          "enum": [
-            "date",
-            "amount"
-          ],
+          "enum": ["date", "amount"],
           "type": "string"
         },
         "style": "form"
@@ -2838,13 +2811,7 @@
         "name": "sortBy",
         "required": false,
         "schema": {
-          "enum": [
-            "startingDate",
-            "endingDate",
-            "name",
-            "createdAt",
-            "amount"
-          ],
+          "enum": ["startingDate", "endingDate", "name", "createdAt", "amount"],
           "type": "string"
         },
         "style": "form"
@@ -2855,10 +2822,7 @@
         "name": "sort",
         "required": false,
         "schema": {
-          "enum": [
-            "asc",
-            "desc"
-          ],
+          "enum": ["asc", "desc"],
           "type": "string"
         },
         "style": "form"
@@ -2890,11 +2854,7 @@
       "BasicConfiguration": {
         "properties": {
           "currency": {
-            "enum": [
-              "MGA",
-              "USD",
-              "EUR"
-            ],
+            "enum": ["MGA", "USD", "EUR"],
             "type": "string"
           },
           "loginWithoutPassword": {
@@ -3035,10 +2995,7 @@
             "type": "array"
           },
           "type": {
-            "enum": [
-              "IN",
-              "OUT"
-            ],
+            "enum": ["IN", "OUT"],
             "type": "string"
           },
           "description": {
@@ -3085,10 +3042,7 @@
       "WalletAutomaticIncome": {
         "properties": {
           "type": {
-            "enum": [
-              "NOT_SPECIFIED",
-              "MENSUAL"
-            ],
+            "enum": ["NOT_SPECIFIED", "MENSUAL"],
             "type": "string"
           },
           "amount": {
@@ -3111,12 +3065,7 @@
             "type": "string"
           },
           "type": {
-            "enum": [
-              "CASH",
-              "MOBILE_MONEY",
-              "BANK",
-              "DEBT"
-            ],
+            "enum": ["CASH", "MOBILE_MONEY", "BANK", "DEBT"],
             "type": "string"
           },
           "color": {
@@ -3447,6 +3396,59 @@
           },
           "transactionCount": {
             "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "googleSignIn_request": {
+        "properties": {
+          "idToken": {
+            "type": "string"
+          }
+        },
+        "required": ["idToken"],
+        "type": "object"
+      },
+      "forgotPassword_request": {
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": ["email"],
+        "type": "object"
+      },
+      "forgotPassword_200_response": {
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "resetPassword_request": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "newPassword", "token"],
+        "type": "object"
+      },
+      "resetPassword_200_response": {
+        "properties": {
+          "message": {
+            "type": "string"
           }
         },
         "type": "object"
