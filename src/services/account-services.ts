@@ -5,7 +5,7 @@ import * as jwt from "jsonwebtoken";
 
 import { getPrismaClient } from "@/configs";
 import { v4 } from "uuid";
-import { ApiError, BadRequestError, NotFoundError } from "@/errors";
+import { ApiError, BadRequestError } from "@/errors";
 
 const googleClient = new OAuth2Client();
 
@@ -106,7 +106,7 @@ export class AccountServices {
 
     const token = jwt.sign(
       { id: account.id, username: account.username, email: account.email },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET as string,
       { expiresIn: "10h" }
     );
 
@@ -119,7 +119,7 @@ export class AccountServices {
       where: { email },
     });
     if (!account) {
-      throw new NotFoundError("Aucun compte avec cet email", 404);
+      throw new ApiError("Aucun compte avec cet email", 404);
     }
 
     await getPrismaClient().passwordResetToken.deleteMany({
@@ -148,7 +148,7 @@ export class AccountServices {
     });
 
     if (!resetToken) {
-      throw new NotFoundError("Token invalide", 404);
+      throw new ApiError("Aucun compte avec cet email", 404);
     }
 
     if (resetToken.used) {
