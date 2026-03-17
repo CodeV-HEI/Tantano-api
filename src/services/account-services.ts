@@ -119,7 +119,7 @@ export class AccountServices {
       where: { email },
     });
     if (!account) {
-      throw new NotFoundError("Aucun compte avec cet email");
+      throw new NotFoundError("Aucun compte avec cet email", 404);
     }
 
     await getPrismaClient().passwordResetToken.deleteMany({
@@ -148,7 +148,7 @@ export class AccountServices {
     });
 
     if (!resetToken) {
-      throw new NotFoundError("Token invalide");
+      throw new NotFoundError("Token invalide", 404);
     }
 
     if (resetToken.used) {
