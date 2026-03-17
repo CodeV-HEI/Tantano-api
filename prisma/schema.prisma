@@ -8,16 +8,18 @@ datasource db {
 }
 
 model Account {
-  id           String        @id @default(uuid())
-  username     String        @unique
-  password     String
-  email        String        @default("")
-  goals        Goal[]
-  labels       Label[]
-  projects     Project[]
-  transactions Transaction[]
-  wallets      Wallet[]
-  roles        UserRole[]
+  id                  String               @id @default(uuid())
+  username            String               @unique
+  password            String
+  email               String               @unique @default("")
+  googleId            String?              @unique
+  goals               Goal[]
+  labels              Label[]
+  projects            Project[]
+  transactions        Transaction[]
+  wallets             Wallet[]
+  roles               UserRole[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 model Role {
@@ -160,4 +162,14 @@ model Configuration {
   currency              String
   subscriptionId        String?       @unique
   subscription          Subscription? @relation(fields: [subscriptionId], references: [id])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
