@@ -66,7 +66,7 @@ export class AccountServices {
           audience: clientId,
         });
         payload = ticket.getPayload();
-        if (payload) break; 
+        if (payload) break;
       } catch (err) {
         lastError = err as Error;
       }
@@ -79,7 +79,7 @@ export class AccountServices {
 
     const { email, sub: googleId, name } = payload;
 
-    let account = await getPrismaClient().account.findUnique({
+    let account = await getPrismaClient().account.findFirst({
       where: { email },
     });
 
@@ -115,7 +115,7 @@ export class AccountServices {
   }
 
   static async forgotPassword(email: string) {
-    const account = await getPrismaClient().account.findUnique({
+    const account = await getPrismaClient().account.findFirst({
       where: { email },
     });
     if (!account) {
