@@ -18,7 +18,7 @@ export class AccountServices {
       throw new ApiError((isEmailExisting ? "Email" : "Username") + "=" + (isEmailExisting ? account.email : account.username) + " is already used", 400);
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await (bcrypt.genSalt as (rounds: number) => Promise<string>)(10);
     const hashedPassword = await bcrypt.hash(account.password, salt);
     const parsedAccount: Account = { ...account, id: userId, password: hashedPassword };
 
@@ -159,7 +159,7 @@ export class AccountServices {
       throw new BadRequestError("Token expiré");
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await (bcrypt.genSalt as (rounds: number) => Promise<string>)(10);
     const hashedPassword = await (bcrypt.hash as (password: string, salt: string) => Promise<string>)(newPassword, salt);
 
     await getPrismaClient().account.update({
