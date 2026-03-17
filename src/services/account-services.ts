@@ -83,20 +83,28 @@ export class AccountServices {
       throw new ApiError("Token Google invalide ou expiré", 400);
     }
 
+    console.log("✅ Payload reçu, email:", payload.email);
+
     const { email, sub: googleId, name } = payload;
 
     let account = await getPrismaClient().account.findFirst({
       where: { email },
     });
 
+    console.log("🔍 Compte trouvé par email:", account ? account.id : "aucun");
+
     if (account) {
       if (!account.googleId) {
+        console.log("🔄 Mise à jour du googleId pour le compte", account.id);
         account = await getPrismaClient().account.update({
           where: { id: account.id },
           data: { googleId },
         });
+      } else {
+        console.log("ℹ️ googleId déjà présent");
       }
     } else {
+      console.log("🆕 Création d'un nouveau compte");
       const username = name || email.split("@")[0];
       const uniqueUsername = await this.generateUniqueUsername(username);
       account = await getPrismaClient().account.create({
@@ -110,11 +118,15 @@ export class AccountServices {
       });
     }
 
+    console.log("✅ Compte après opération:", account.id);
+
     const token = jwt.sign(
       { id: account.id, username: account.username, email: account.email },
       process.env.JWT_SECRET as string,
       { expiresIn: "10h" }
     );
+
+    console.log("🔑 Token JWT généré");
 
     const { password, ...accountWithoutPassword } = account;
     return { token, account: accountWithoutPassword };
