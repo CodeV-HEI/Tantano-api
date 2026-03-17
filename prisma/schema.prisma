@@ -11,7 +11,7 @@ model Account {
   id                  String               @id @default(uuid())
   username            String               @unique
   password            String
-  email               String               @unique @default("")
+  email               String               @default("")
   googleId            String?              @unique
   goals               Goal[]
   labels              Label[]
