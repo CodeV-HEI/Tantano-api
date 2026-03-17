@@ -47,40 +47,40 @@ export class AccountServices {
 
   static async googleSignIn(idToken: string) {
     const clientIds = [
-        process.env.GOOGLE_CLIENT_ID_EXPO,
-        process.env.GOOGLE_CLIENT_ID_ANDROID,
-        process.env.GOOGLE_WEB_CLIENT_ID,
-        process.env.GOOGLE_CLIENT_ID_IOS,
+      process.env.GOOGLE_CLIENT_ID_EXPO,
+      process.env.GOOGLE_CLIENT_ID_ANDROID,
+      process.env.GOOGLE_WEB_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_ID_IOS,
     ].filter(Boolean) as string[];
 
-    console.log("🔍 Client IDs disponibles:", clientIds);
+    console.log('🔍 Client IDs disponibles:', clientIds);
 
     if (clientIds.length === 0) {
-        throw new ApiError("Aucun client ID Google configuré", 500);
+      throw new ApiError("Aucun client ID Google configuré", 500);
     }
 
     let payload: any = null;
     let lastError: Error | null = null;
 
     for (const clientId of clientIds) {
-        try {
-            console.log(`🔍 Tentative avec client ID: ${clientId}`);
-            const ticket = await googleClient.verifyIdToken({
-                idToken,
-                audience: clientId,
-            });
-            payload = ticket.getPayload();
-            console.log(`✅ Succès avec le client ID: ${clientId}`);
-            if (payload) break;
-        } catch (err: any) {
-            console.error(`❌ Échec pour ${clientId}:`, err.message);
-            lastError = err as Error;
-        }
+      try {
+        console.log(`🔍 Tentative avec client ID: ${clientId}`);
+        const ticket = await googleClient.verifyIdToken({
+          idToken,
+          audience: clientId,
+        });
+        payload = ticket.getPayload();
+        console.log(`✅ Succès avec le client ID: ${clientId}`);
+        if (payload) break;
+      } catch (err: any) {
+        console.error(`❌ Échec pour ${clientId}:`, err.message);
+        lastError = err as Error;
+      }
     }
 
     if (!payload || !payload.email) {
-        console.error("❌ Erreur de vérification Google - Dernière erreur:", lastError);
-        throw new ApiError("Token Google invalide ou expiré", 400);
+      console.error("❌ Erreur de vérification Google - Dernière erreur:", lastError);
+      throw new ApiError("Token Google invalide ou expiré", 400);
     }
 
     const { email, sub: googleId, name } = payload;
